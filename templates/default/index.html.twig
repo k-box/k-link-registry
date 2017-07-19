@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div id="wrapper">
+        <div id="container">
+            <div id="header">
+                <h1><span>Login, sign-up &amp; recover password</span></h1>
+            </div>
+
+            <div id="main">
+                <div id="activity-title"><span>K-Link</span><span>Registry</span></div>
+                <div id="activity">
+                    <div class="heading">Login</div>
+                    <div class="message {{ message_type_class }}">{{ messages | join('<br/>') | raw }}</div>
+                    <form method="post">
+                        <input name="email" type="email" placeholder="Email" value="{{ email }}" required="required" />
+                        <input name="password" type="password" placeholder="Password" required="required" />
+                        <button type="submit">Login</button>
+                    </form>
+                    <div class="footer">
+                        <span onclick="window.location.href='{{ base_url }}register';">Don't have an account? Sign up.</span>
+                        <span onclick="window.location.href='{{ base_url }}recover';">I forgot my password.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+<link href="{{ base_asset_url }}css/index.css" rel="stylesheet" type="text/css" media="all">
+{% endblock %}

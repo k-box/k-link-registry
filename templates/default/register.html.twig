@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div id="wrapper">
+        <div id="container">
+            <div id="header">
+                <h1><span>Login, sign-up &amp; recover password</span></h1>
+            </div>
+
+            <div id="main">
+                <div id="activity-title"><span>K-Link</span><span>Registry</span></div>
+                <div id="activity">
+                    <div class="heading">Sign Up</div>
+                    <div class="message {{ message_type_class }}">{{ messages | join('<br/>') | raw }}</div>
+                    {{ form_start(form) }}
+                    {{ form_end(form) }}
+                    <div class="footer">
+                        <span onclick="window.location.href='{{ base_url }}';">Already have an account? Login.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+<link href="{{ base_asset_url }}css/index.css" rel="stylesheet" type="text/css" media="all">
+{% endblock %}

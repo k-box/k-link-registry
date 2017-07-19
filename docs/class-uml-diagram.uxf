@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>8</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>216</x>
+      <y>688</y>
+      <w>520</w>
+      <h>256</h>
+    </coordinates>
+    <panel_attributes>*Application*
+--
+
+- &lt;&lt;PK&gt;&gt; application_id :Integer
+- &lt;&lt;FK&gt;&gt; registrant_id :Integer
+- name :String
+- app_domain :String
+- auth_token :String
+- permissions :Array&lt;Permission&gt;
+- status  :Boolean
+
+
+--
+
+/+ create(values :List&lt;String&gt;) :Boolean/
+/+ update(application_id :Integer, values :Map&lt;String,Object&gt;) :Boolean/
+/+ delete(application_id :Integer) :Boolean/
+
+/+ check_access(app_domain :String, auth_token :String, permissions :Array&lt;String&gt;) :Application/
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>216</x>
+      <y>336</y>
+      <w>520</w>
+      <h>248</h>
+    </coordinates>
+    <panel_attributes>*Registrant*
+--
+
+- &lt;&lt;PK&gt;&gt; registrant_id :Integer
+- name :String
+- password :String (hashed with salt)
+- salt :String
+- email :String
+- role :String
+- status :Boolean
+- last_login :Int (timestamp)
+
+--
+
+/+ create(values :List&lt;String&gt;) :Boolean/
+/+ update(registrant_id :Integer, values :List&lt;String&gt;) :Boolean/
+/+ delete(registrant_id :Integer) :Boolean/
+/+ authenticate(email :String, password :String) :Boolean/
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>824</x>
+      <y>320</y>
+      <w>368</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>*EmailVerification*
+--
+
+- &lt;&lt;PK&gt;&gt; email :String
+- &lt;&lt;FK&gt;&gt; registrant_id :Integer
+- token :String (random hash)
+- timestamp :Integer
+
+--
+
+/+ add_email_approval_request(email, registrant_id) :Boolean/
+/+ verify_email_approval_request(email, token) :Boolean/
+
+
+bg=#dddddd</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>208</x>
+      <y>88</y>
+      <w>528</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>*RegistryCore*
+--
+
+- variables :List&lt;String/String&gt;
+
+--
+
+/+ send_mail(address, text) :Boolean /
+/+ log(type, message) :void /
+
+bg=#dddddd</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>0</x>
+      <y>0</y>
+      <w>184</w>
+      <h>168</h>
+    </coordinates>
+    <panel_attributes>variables (key-value storage), for example for the keys:
+
+general_name
+general_url
+email_sender_address
+email_sender_name
+email_smtp_url
+email_smtp_oort
+email_smtp_username
+email_smtp_password
+
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>992</x>
+      <y>200</y>
+      <w>184</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>The proposed email (changes) for a registrant are saved and wait for verification. If one gets successfully verified it will be placed in the Registrant table and removed in this table.
+
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>728</x>
+      <y>384</y>
+      <w>112</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=N</panel_attributes>
+    <additional_attributes>10.0;10.0;120.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>408</x>
+      <y>576</y>
+      <w>32</w>
+      <h>128</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=N</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>16</x>
+      <y>904</y>
+      <w>720</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>*Exposed to AccessAPI*
+bg=#1592e6</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>0</x>
+      <y>184</y>
+      <w>184</w>
+      <h>168</h>
+    </coordinates>
+    <panel_attributes>All events should be logged. (User creation, update on application or participant information, emails sending, all possible errors)
+All messages should follow the principle of anserwering: Who did what and when? (e.g if there is not yet a user name, then use the IP).
+
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>176</x>
+      <y>184</y>
+      <w>72</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;60.0;70.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>176</x>
+      <y>72</y>
+      <w>80</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;80.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>408</x>
+      <y>216</y>
+      <w>32</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=N</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>824</x>
+      <y>504</y>
+      <w>368</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>*PasswordChangeVerification*
+--
+
+- &lt;&lt;PK&gt;&gt;&lt;&lt;FK&gt;&gt; registrant_id :Integer
+- token :String (random hash)
+- timestamp :Integer
+
+--
+
+/+ add_password_change_request(email, registrant_id) :Boolean/
+/+ verify_password_change_requestl(email, token) :Boolean/
+
+
+bg=#dddddd</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>728</x>
+      <y>552</y>
+      <w>112</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>120.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>992</x>
+      <y>680</y>
+      <w>184</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>The proposed password change verification, checks if a user has (recently) requested a password change link and is therefore entitled (with the token) to visit the corresponding page.
+
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>16</x>
+      <y>688</y>
+      <w>120</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Permission
+--
+&lt;&lt;PK&gt;&gt;&lt;&lt;FK&gt;&gt; name: String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>128</x>
+      <y>696</y>
+      <w>104</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=N</panel_attributes>
+    <additional_attributes>110.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+</diagram>

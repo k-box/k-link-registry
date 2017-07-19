@@ -1,0 +1,68 @@
+imports:
+    - { resource: parameters.yaml }
+
+security:
+
+    encoders:
+        App\Entity\Registrant:
+            algorithm: bcrypt
+        Symfony\Component\Security\Core\User\User:
+            algorithm: bcrypt
+
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_USER
+
+    # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+    providers:
+        in_memory_user_provider:
+            memory:
+                users:
+                    '%kregistry_admin_username%':
+                        password: '%kregistry_admin_password%'
+                        roles: ROLE_ADMIN
+
+        mariadb_user_provider:
+            entity:
+                class: App:Registrant
+                property: email
+
+        chain_user_provider:
+            chain:
+                providers: [ in_memory_user_provider, mariadb_user_provider ]
+
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            pattern: ^/
+            anonymous: true
+            logout:
+                path: /exit
+                target: '%kregistry_base_protocol%://%kregistry_base_domain%%kregistry_base_url_path%'
+            # activate different ways to authenticate
+            provider: chain_user_provider
+            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+            http_basic: false
+            # https://symfony.com/doc/current/security/form_login_setup.html
+            form_login:
+                provider: chain_user_provider
+                login_path: /
+                check_path: /
+                default_target_path: '%kregistry_base_protocol%://%kregistry_base_domain%%kregistry_base_url_path%dashboard'
+                failure_path: '%kregistry_base_protocol%://%kregistry_base_domain%%kregistry_base_url_path%'
+                #csrf_provider: framework.csrf_provider
+                post_only: true
+                require_previous_session: true
+                username_parameter: email
+                password_parameter: password
+
+    access_control:
+        - { path: ^/$', role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/recover$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/password$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin$, role: ROLE_ADMIN }
+        - { path: ^/dashboard$, role: ROLE_USER }

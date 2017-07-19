@@ -1,0 +1,5 @@
+controllers:
+#    auto-routing
+    resource: ../src/Controller/
+    type: annotation
+

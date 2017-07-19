@@ -1,0 +1,14 @@
+<div id="header">
+    <h1 id="activity-title"><span>K-Link</span><span>Registry</span></h1><span id="hamenu" onclick="$('#quickmenu').toggle();"></span>
+        <span id="quickmenu">
+            <ul>
+                {% if (name == false) or (email == false) %}
+                <li onclick="$('#quickmenu').hide();window.location.href='{{ base_url}}dashboard/registrants';">Registrants</li>
+                <!-- <li onclick="$('#quickmenu').hide();window.location.href='{{ base_url}}dashboard/permissions';">Permissions</li> -->
+                {% endif %}
+                <li onclick="$('#quickmenu').hide();window.location.href='{{ base_url}}dashboard/applications';">Applications</li>
+                <li onclick="$('#quickmenu').hide();window.location.href='{{ base_url}}dashboard';">Settings</li>
+                <li onclick="$('#quickmenu').hide();window.location.href='{{ base_url }}exit';">Logout</li>
+            </ul>
+        </span>
+</div>

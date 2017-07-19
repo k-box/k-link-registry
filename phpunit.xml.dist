@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- https://phpunit.de/manual/current/en/appendixes.configuration.html -->
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.8/phpunit.xsd"
+         backupGlobals="false"
+         colors="true"
+         bootstrap="vendor/autoload.php"
+>
+    <php>
+        <ini name="error_reporting" value="-1" />
+        <server name="KERNEL_CLASS" value="App\Kernel" />
+        <server name="KERNEL_DIR" value="src/" />
+        <env name="APP_ENV" value="prod" />
+        <env name="APP_DEBUG" value="0" />
+        <env name="APP_SECRET" value="774185ebf1c8d9ce0a8343eb2c4c3730" />
+        <env name="DATABASE_HOST" value="127.0.0.1" />
+        <env name="DATABASE_PORT" value="3306" />
+        <env name="DATABASE_NAME" value="kregistry" />
+        <env name="DATABASE_USER" value="kregistry" />
+        <env name="DATABASE_ROOT_PASSWORD" value="kregistry" />
+        <env name="DATABASE_PASSWORD" value="kregistry" />
+        <env name="KREGISTRY_BASE_URL_PATH" value="/" />
+        <env name="KREGISTRY_BASE_PATH" value="/" />
+        <env name="KREGISTRY_DOMAIN" value="127.0.0.1" />
+        <env name="KREGISTRY_BASE_PROTOCOL" value="http" />
+        <env name="KREGISTRY_ADMIN_USERNAME" value="admin@kregistry.local" />
+        <env name="KSEARCH_CORE_IP_ADDRESS" value="127.0.0.1" />
+        <env name="KREGISTRY_ADMIN_PASSWORD" value="$2y$13$aF2Jo.gPyv2N7X317GPDberlrJCO7VbKjiRQWuHHEv2HwHipi1Iza" />
+        <env name="MAILER_TRANSPORT" value="smtp" />
+        <env name="MAILER_HOST" value="127.0.0.1" />
+        <env name="MAILER_USER" value="admin@kregistry.local" />
+        <env name="MAILER_PASSWORD" value="1234567890" />
+        <env name="MAILER_PORT" value="587" />
+        <env name="MAILER_SENDER_NAME" value="K-Registry Mailer Daemon" />
+        <env name="MAILER_SENDER_ADDRESS" value="admin@kregistry.local" />
+        <env name="TOKEN_EXPIRATION_SECONDS" value="1800" />
+    </php>
+
+    <testsuites>
+        <testsuite name="Registry API test suite">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist>
+            <directory>src</directory>
+            <exclude>
+                <directory>src/Resources</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+</phpunit>

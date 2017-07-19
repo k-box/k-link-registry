@@ -1,0 +1,102 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "K-Registry API",
+        "description": "The K-Registry API definition",
+        "termsOfService": "https://klink.asia/terms/",
+        "contact": {
+            "email": "api@klink.asia"
+        },
+        "version": "0.2"
+    },
+    "host": "kregistry.local",
+    "basePath": "/",
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "paths": {},
+    "definitions": {
+        "Error\\Error": {
+            "required": [
+                "code",
+                "message"
+            ],
+            "properties": {
+                "code": {
+                    "description": "JSON-RPC inspired error codes.",
+                    "type": "integer",
+                    "example": 404
+                },
+                "message": {
+                    "description": "Human readable error message.",
+                    "type": "string",
+                    "example": "Not Found"
+                }
+            }
+        },
+        "Error\\ErrorResponse": {
+            "required": [
+                "error"
+            ],
+            "properties": {
+                "error": {
+                    "description": "The error data.",
+                    "$ref": "#/definitions/Error\\Error"
+                },
+                "id": {
+                    "description": "The request ID this response is referring to.",
+                    "type": "string",
+                    "example": "request-3d254173"
+                }
+            }
+        },
+        "Model\\RPCRequest": {
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "description": "A request identifier established by the client that MUST contain a string or a number.\n\nThe value SHOULD normally not be Null and Numbers SHOULD NOT contain fractional parts.",
+                    "type": "string",
+                    "example": "request-3d254173"
+                }
+            }
+        },
+        "Status\\Status": {
+            "required": [
+                "code",
+                "status"
+            ],
+            "properties": {
+                "code": {
+                    "description": "JSON-RPC inspired error codes.",
+                    "type": "integer",
+                    "example": 201
+                },
+                "status": {
+                    "description": "The status message.",
+                    "type": "string",
+                    "example": "Ok"
+                }
+            }
+        },
+        "Status\\StatusResponse": {
+            "required": [
+                "result"
+            ],
+            "properties": {
+                "result": {
+                    "description": "The status data.",
+                    "readOnly": true,
+                    "$ref": "#/definitions/Status\\Status"
+                },
+                "id": {
+                    "description": "The request ID this response is referring to.",
+                    "type": "string",
+                    "example": "request-3d254173"
+                }
+            }
+        }
+    }
+}

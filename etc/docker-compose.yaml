@@ -1,0 +1,70 @@
+imports:
+    - { resource: parameters.yaml }
+
+version: '2'
+
+networks:
+  internal:
+
+php:
+  image: "docker.klink.asia/open/docker-php:7.1"
+
+services:
+  kregistry:
+    build: .
+    ports:
+      - 8000:80
+    environment:
+      - KREGISTRY_DB_NAME='%database_name%'
+      - KREGISTRY_DB_USERNAME='%database_user%'
+      - KREGISTRY_DB_HOST='%database_host%'
+      - KREGISTRY_DB_TABLE_PREFIX=kregistry_
+      - KREGISTRY_DB_PASSWORD='%database_password%'
+      - KREGISTRY_APP_URL=https://kregistry.local/
+      - KSEARCH_CORE_ADDRESS=https://kcore.local/
+      - KREGISTRY_APP_KEY=2ffa8bc059abc54b9
+      - KREGISTRY_ADMIN_USERNAME='%kregistry_admin_username%'
+      - KREGISTRY_ADMIN_PASSWORD='%kregistry_admin_password%'
+      - KREGISTRY_PHP_MEMORY_LIMIT=500M
+      - APP_ENV=prod
+      - APP_DEBUG=0
+      - KREGISTRY_BASE_URL_PATH='%kregistry_base_url_path%'
+      - TOKEN_EXPIRATION_SECONDS=1800
+    networks:
+      - internal
+    depends_on:
+      - mariadb
+  mariadb:
+    image: mariadb:10
+  environment:
+    MYSQL_DATABASE: '%database_name%'
+    MYSQL_USER: '%database_user%'
+    MYSQL_ROOT_PASSWORD: '%database_root_password%'
+    MYSQL_PASSWORD: '%database_password%'
+  networks:
+    - internal
+
+k-registry-php:
+  image: "k-registry-php"
+  environment:
+    KREGISTRY_DB_NAME: '%database_name%'
+    KREGISTRY_DB_USERNAME: '%database_user%'
+    KREGISTRY_DB_HOST: '%database_host%'
+    KREGISTRY_DB_TABLE_PREFIX: "kregistry_"
+    KREGISTRY_DB_PASSWORD: '%database_password%'
+    KREGISTRY_APP_URL: "https://kregistry.local/"
+    KSEARCH_CORE_ADDRESS: "https://kcore.local/"
+    KREGISTRY_APP_KEY: "2ffa8bc059abc54b9"
+    KREGISTRY_ADMIN_USERNAME: '%kregistry_admin_username%'
+    KREGISTRY_ADMIN_PASSWORD: '%kregistry_admin_password%'
+    KREGISTRY_PHP_MEMORY_LIMIT: "500M"
+    KREGISTRY_BASE_URL_PATH: '%kregistry_base_url_path%'
+  links:
+    - mariadb:mariadb
+  volumes:
+    - "/var/www"
+    - "./storage:/var/www/storage"
+    - "/var/run"
+    - "./etc/docker/sql:/docker-entrypoint-initdb.d"
+  hostname: "registry.klink.asia"
+  command: php

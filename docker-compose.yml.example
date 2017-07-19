@@ -1,0 +1,23 @@
+version: '2'
+
+services:
+  registry:
+    # uncomment either of these
+    #image: "docker.klink.asia/images/k-link-registry:latest"
+    #build: .
+    environment:
+      KREGISTRY_BASE_PROTOCOL: "http"
+      KREGISTRY_DOMAIN: "localhost:8080"
+      KREGISTRY_BASE_URL_PATH: "/"
+      KREGISTRY_ADMIN_USERNAME: "admin@example.com"
+      KREGISTRY_ADMIN_PASSWORD: "$$2y$$10$$4YUGcB.1EwRKdCQO8hCeEeCwdCQUDVFF1VKEvIV.PcdB2VrVYuoq6" # "test"
+      APP_SECRET: "12345678901234567890123456789012" # 32 ascii chars
+
+      MAILER_HOST: "smtp.example.com"
+      MAILER_PORT: "587"
+      MAILER_USER: "user@example.com"
+      MAILER_PASSWORD: "test"
+      MAILER_SENDER_ADDRESS: "kregistry@example.com"
+      MAILER_SENDER_NAME: "K-Registry Mailer Daemon"
+    ports:
+      - 8080:80

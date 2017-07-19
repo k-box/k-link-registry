@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div id="wrapper">
+        <div id="container">
+            {% include 'default/header.html.twig' %}
+
+            <div id="main">
+                <div id="application" class="activity">
+                    <div class="heading">Application: <span class="appname">{{ application.getName() }}</span></div>
+                    <div id="messages">
+                    {% for message,class in messages %}
+                        <div class="message {{ class }}">{{ message }}</div>
+                    {% endfor %}
+                    </div>
+                    <form method="post">
+                        <label class="underlined field">Name</label><input name="name" type="text" placeholder="Name" value="{{ application.getName() }}" /><br />
+                        <label class="underlined field">App domain</label><input name="domain" type="text" placeholder="App domain" value="{{ application.getDomain() }}" /><br />
+                        <label class="underlined field">Auth token</label><input name="auth_token" type="text" disabled="disabled" placeholder="Auth token" value="{{ application.getAuthToken() }}" /><br />
+                        <label class="underlined field">Permissions</label><select class="multiple" multiple="multiple" name="permissions[]" placeholder="Permissions">{{ permissions_html | raw }}</select><br />
+                        {% if (name == false) or (email == false) %}
+                        <label class="underlined field">Registrant</label>
+                        <select name="registrant_id" placeholder="Registrant">
+                        {% for user in users %}
+                            <option{% if (application.getRegistrantID() == user.getID()) %} selected="selected"{% endif %} value="{{ user.getID() }}">{{ user.getName() }}</option>
+                        {% endfor %}
+                        </select><br />
+                        {% else %}
+                        <label class="underlined field">Registrant</label><input disabled="disabled" type="text" placeholder="Registrant" value="{{ name }}" /><br />
+                        {% endif %}
+                        <label class="underlined field">Status</label><select name="status" placeholder="Status"><option{% if (application.getStatus() == 0) %} selected="selected"{% endif %} value="0">Disabled</option><option{% if (application.getStatus() == 1) %} selected="selected"{% endif %} value="1">Enabled</option></select><br />
+                        <input type="hidden" name="application_id" value="{{ application.getID() }}" />
+                        <input type="button" onclick="window.location.href='{{ base_url }}dashboard/applications';" value="Back" class="back-button" /><input type="submit" value="Save" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+<link href="{{ base_asset_url }}css/dashboard.css" rel="stylesheet" type="text/css" media="all">
+{% endblock %}

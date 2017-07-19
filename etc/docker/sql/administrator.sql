@@ -1,0 +1,1 @@
+--INSERT IGNORE INTO `registrant`(`registrant_id`,`email`,`name`,`role`,`password`,`salt`,`status`,`last_login`,`applications`) VALUES(0,'admin@kregitry.core','K-Registry Administrator','ROLE_ADMIN',PASSWORD('admin'),NULL,1,NULL,NULL);

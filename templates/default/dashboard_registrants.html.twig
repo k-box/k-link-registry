@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div id="wrapper">
+        <div id="container">
+            {% include 'default/header.html.twig' %}
+
+            <div id="main">
+                {% if (name == false) or (email == false) %}
+                <div id="registrants" class="activity">
+                    <div class="heading">
+                        <span>Registrants:</span>
+                        <input type="button" onclick="window.location.href='{{ base_url }}dashboard/registrant/add';" value="Add" class="add-button" />
+                    </div>
+                    <div id="messages">
+                    {% for message,class in messages %}
+                        <div class="message {{ class }}">{{ message }}</div>
+                    {% endfor %}
+                    </div>
+                    <div class="table">
+                        <div class="table-header">
+                            <div class="table-header-cell">ID</div>
+                            <div class="table-header-cell">Name</div>
+                            <div class="table-header-cell">Email</div>
+                            <div class="table-header-cell">Role(s)</div>
+                            <div class="table-header-cell">Status</div>
+                            <div class="table-header-cell">Action</div>
+                        </div>
+                        {% for user in registrants %}
+                        <div class="table-row">
+                            <div class="table-cell">{{ user.getID() }}</div>
+                            <div class="table-cell"><a href="javascript:void(0);" onclick="window.location.href='{{ base_url }}dashboard/registrant/edit/{{ user.getID() }}';">{{ user.getName() }}</a></div>
+                            <div class="table-cell">{{ user.getEmail() }}</div>
+                            <div class="table-cell">{{ user.getRolesNames() | join(', ') }}</div>
+                            <div class="table-cell">{{ user.getStatusName() }}</div>
+                            <div><button onclick="if(confirm('Are you sure you want to delete registrant {{ user.getName() }}?'))window.location.href='{{ base_url }}dashboard/registrant/delete/{{ user.getID() }}';">-</button></div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <input type="button" onclick="window.location.href='{{ base_url }}dashboard/registrants';" value="Back" class="back-button" />
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+<link href="{{ base_asset_url }}css/dashboard.css" rel="stylesheet" type="text/css" media="all">
+{% endblock %}

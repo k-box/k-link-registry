@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div id="wrapper">
+        <div id="container">
+            {% include 'default/header.html.twig' %}
+
+            <div id="main">
+                {% if (name == false) or (email == false) %}
+                <div id="registrant" class="activity">
+                    <div class="heading">Registrant: <span class="registrantname"></span></div>
+                    <div id="messages">
+                    {% for message,class in messages %}
+                        <div class="message {{ class }}">{{ message }}</div>
+                    {% endfor %}
+                    </div>
+                    {{ form_start(form) }}
+                    {{ form_end(form) }}
+                    <input type="button" onclick="window.location.href='{{ base_url }}dashboard/registrants';" value="Back" class="back-button" />
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+<link href="{{ base_asset_url }}css/dashboard-registrant.css" rel="stylesheet" type="text/css" media="all">
+{% endblock %}

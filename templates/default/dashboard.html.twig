@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div id="wrapper">
+        <div id="container">
+            {% include 'default/header.html.twig' %}
+
+            <div id="main">
+                <div id="settings" class="activity">
+                    <div class="heading">My Account<input type="button" onclick="window.location.href='{{ base_url }}dashboard';" value="Back" class="back-button" /></div>
+                    <div id="messages">
+                    {% for message,class in messages %}
+                        <div class="message {{ class }}">{{ message }}</div>
+                    {% endfor %}
+                    </div>
+                    {% if (name == false) or (email == false) %}
+                    <label class="underlined field">Email</label><input name="email" disabled="disabled" type="email" placeholder="Email" value="{{ username }}" /><br />
+                    <label class="underlined field">Role</label><input name="role" disabled="disabled" type="text" placeholder="Role" value="{{ role }}" /><br />
+                    {% else %}
+                    <form method="post">
+                        <label class="underlined field">Name</label><input name="name" type="text" placeholder="Name" value="{{ name }}" /><br />
+                        <label class="underlined field">Password</label><a class="underlined longfield" href="{{ base_url }}password">Send link to change password</a><br />
+                        <label class="underlined field">Email</label><input name="email" type="email" placeholder="Email" value="{{ email }}" /><br />
+                        <label class="underlined field">Role</label><input name="role" disabled="disabled" type="text" placeholder="Role" value="{{ role }}" /><br />
+                        <input type="submit" value="Save" />
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+<link href="{{ base_asset_url }}css/dashboard.css" rel="stylesheet" type="text/css" media="all">
+{% endblock %}

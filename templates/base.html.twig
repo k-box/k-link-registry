@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}K-Link Registry{% endblock %}</title>
+        {% block stylesheets %}{% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ base_asset_url }}favicon.ico" />
+        <link href="{{ base_asset_url }}bundles/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+        <script src="{{ base_asset_url }}bundles/jquery/jquery.slim.min.js"></script>
+        <script src="{{ base_asset_url }}bundles/bootstrap/js/bootstrap.min.js"></script>
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>
