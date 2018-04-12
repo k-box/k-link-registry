@@ -13,7 +13,7 @@ ENV \
     MAILER_SENDER_ADDRESS=admin@example.com \
     APP_ENV=prod \
     APP_DEBUG=0 \
-    DATABASE_HOST=127.0.0.1 \
+    DATABASE_HOST=database \
     DATABASE_PORT=3306 \
     DATABASE_NAME=kregistry \
     DATABASE_USER=kregistry \

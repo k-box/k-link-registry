@@ -12,7 +12,6 @@ PORT=80
 term_handler() {
   exec kill `cat /var/run/nginx.pid`
   exec kill `cat /var/run/php-fpm.pid`
-  exec kill `cat /var/run/mysqld/mysqld.pid`
   exit 143; # 128 + 15 -- SIGTERM
 }
 
@@ -35,17 +34,15 @@ then
 fi
 
 case "${COMMAND}" in
-    'start')
-        echo "Starting MariaDB..."
-        mysqld_safe --no-watch --port=3306
+    *)
+        source .env
         echo "Starting PHP-FPM..."
         php-fpm -D -y /usr/local/etc/php-fpm.conf
         echo "Installing database..."
-        while ! nc -z localhost 3306; do
+        while ! nc -z ${DATABASE_HOST} ${DATABASE_PORT}; do
+            echo "Trying to connect to server.."
             sleep 5
         done
-        mysql -u root -h localhost --protocol tcp -P 3306 -pkregistry < /var/www/kregistry/etc/docker/mariadb/init.sql
-        source .env
         bin/console doctrine:schema:update --force
         mysql -u root -h localhost --protocol tcp -P 3306 -pkregistry < /var/www/kregistry/etc/docker/mariadb/post.sql
         if [ "${APP_ENV}" = "dev" ]; then
@@ -58,24 +55,4 @@ case "${COMMAND}" in
         echo "Starting NGINX..."
         exec nginx -g "daemon off;"
     ;;
-    *)
-        echo "Starting MariaDB..."
-        mysqld_safe --no-watch --port=3306
-        echo "Starting PHP-FPM..."
-        php-fpm -D -y /usr/local/etc/php-fpm.conf
-        echo "Installing database..."
-        while ! nc -z localhost 3306; do
-            sleep 5
-        done
-        mysql -u root -h localhost --protocol tcp -P 3306 -pkregistry < /var/www/kregistry/etc/docker/mariadb/init.sql
-        source .env
-        bin/console doctrine:schema:update --force
-        mysql -u root -h localhost --protocol tcp -P 3306 -pkregistry < /var/www/kregistry/etc/docker/mariadb/post.sql
-        sed \
-            -e "s|@BASE_PATH@|${KREGISTRY_BASE_URL_PATH}|g" \
-            -i /etc/nginx/nginx.conf
-
-        echo "Starting NGINX..."
-        exec nginx -g "daemon off;"
-   ;;
 esac

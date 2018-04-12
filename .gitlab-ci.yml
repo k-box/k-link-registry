@@ -48,7 +48,7 @@ unit_tests:
     - ./vendor/bin/phpunit
 
 kregistry:
-  image: "docker.klink.asia/main/docker-php:7.1"   
+  image: "docker.klink.asia/main/docker-php:7.1"
   tags:
     - docker
   stage: build
