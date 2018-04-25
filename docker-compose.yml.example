@@ -1,11 +1,22 @@
 version: '2'
 
 services:
+  database:
+    image: mariadb:10
+    environment:
+      MYSQL_DATABASE: "kregistry"
+      MYSQL_USER: "kregistry"
+      MYSQL_PASSWORD: "kregistry"
+
   registry:
     # uncomment either of these
     #image: "docker.klink.asia/images/k-link-registry:latest"
     #build: .
     environment:
+      DATABASE_HOST: "database"
+      DATABASE_NAME: "kregistry"
+      DATABASE_USER: "kregistry"
+      DATABASE_PASSWORD: "kregistry"
       KREGISTRY_BASE_PROTOCOL: "http"
       KREGISTRY_DOMAIN: "localhost:8080"
       KREGISTRY_BASE_URL_PATH: "/"
