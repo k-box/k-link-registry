@@ -1,11 +1,29 @@
 version: '2'
 
+networks:
+  internal:
+
+
 services:
+  database:
+    image: mariadb:10
+    environment:
+      MYSQL_ROOT_PASSWORD: "kregistry"
+      MYSQL_DATABASE: "kregistry"
+      MYSQL_USER: "kregistry"
+      MYSQL_PASSWORD: "kregistry"
+    networks:
+      - internal
+
   registry:
     # uncomment either of these
     #image: "docker.klink.asia/images/k-link-registry:latest"
     #build: .
     environment:
+      DATABASE_HOST: "database"
+      DATABASE_NAME: "kregistry"
+      DATABASE_USER: "kregistry"
+      DATABASE_PASSWORD: "kregistry"
       KREGISTRY_BASE_PROTOCOL: "http"
       KREGISTRY_DOMAIN: "localhost:8080"
       KREGISTRY_BASE_URL_PATH: "/"
@@ -21,3 +39,5 @@ services:
       MAILER_SENDER_NAME: "K-Registry Mailer Daemon"
     ports:
       - 8080:80
+    networks:
+      - internal

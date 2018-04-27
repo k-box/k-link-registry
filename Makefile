@@ -7,7 +7,7 @@ ifndef APP_ENV
 endif
 
 copy-env:
-	@test -f .env || cp .env.dist .env
+	#@test -f .env || cp .env.dist .env
 
 ###> symfony/framework-bundle ###
 cache-clear: copy-env
