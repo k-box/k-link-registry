@@ -11,7 +11,7 @@ cache:
     - .composer-cache/
 
 variables:
-    CONTAINER_RELEASE_IMAGE_BASE: $CI_REGISTRY/images/kregistry
+    CONTAINER_RELEASE_IMAGE_BASE: $CI_REGISTRY/images/k-link-registry
 
 .need_composer: &need_composer
   before_script:
