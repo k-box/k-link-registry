@@ -40,13 +40,13 @@ case "${COMMAND}" in
         php-fpm -D -y /usr/local/etc/php-fpm.conf
         echo "Installing database..."
         while ! nc -z ${DATABASE_HOST} ${DATABASE_PORT}; do
-            echo "Trying to connect to server.."
+            echo "Trying to connect to server ${DATABASE_HOST}:${DATABASE_PORT}.."
             sleep 5
         done
         bin/console doctrine:schema:update --force
-        mysql -u root -h localhost --protocol tcp -P 3306 -pkregistry < /var/www/kregistry/etc/docker/mariadb/post.sql
+        mysql -u ${DATABASE_USER} -h ${DATABASE_HOST} --protocol tcp -P ${DATABASE_PORT} -p${DATABASE_PASSWORD} < /var/www/kregistry/etc/docker/mariadb/post.sql
         if [ "${APP_ENV}" = "dev" ]; then
-            mysql -u root -h localhost --protocol tcp -P 3306 -pkregistry < /var/www/kregistry/etc/docker/mariadb/test.sql
+            mysql -u ${DATABASE_USER} -h ${DATABASE_HOST} --protocol tcp -P ${DATABASE_PORT} -p${DATABASE_PASSWORD} < /var/www/kregistry/etc/docker/mariadb/test.sql
         fi
         sed \
             -e "s|@BASE_PATH@|${KREGISTRY_BASE_URL_PATH}|g" \

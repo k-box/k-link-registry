@@ -1,12 +1,19 @@
 version: '2'
 
+networks:
+  internal:
+
+
 services:
   database:
     image: mariadb:10
     environment:
+      MYSQL_ROOT_PASSWORD: "kregistry"
       MYSQL_DATABASE: "kregistry"
       MYSQL_USER: "kregistry"
       MYSQL_PASSWORD: "kregistry"
+    networks:
+      - internal
 
   registry:
     # uncomment either of these
@@ -32,3 +39,5 @@ services:
       MAILER_SENDER_NAME: "K-Registry Mailer Daemon"
     ports:
       - 8080:80
+    networks:
+      - internal
