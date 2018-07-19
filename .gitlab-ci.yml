@@ -1,0 +1,114 @@
+image: golang:1.10
+
+variables:
+  REPO_NAME: git.klink.asia/main/klinkregistry
+
+# The problem is that to be able to use go get, one needs to put
+# the repository in the $GOPATH. So for example if your gitlab domain
+# is gitlab.com, and that your repository is namespace/project, and
+# the default GOPATH being /go, then you'd need to have your
+# repository in /go/src/gitlab.com/namespace/project
+# Thus, making a symbolic link corrects this.
+before_script:
+  - mkdir -p $GOPATH/src/$REPO_NAME
+  - ln -svf $CI_PROJECT_DIR/* $GOPATH/src/$REPO_NAME
+  - cd $GOPATH/src/$REPO_NAME
+
+stages:
+  - test
+  - build_frontend
+  - build
+  - release
+
+format:
+  stage: test
+  tags:
+    - docker
+  script:
+    # we use tags="dev" so there is no dependency on the prebuilt assets yet
+    - go get -tags="dev" -v $(go list ./... | grep -v /vendor/) # get missing dependencies
+    - go fmt $(go list ./... | grep -v /vendor/)
+    - go vet -tags="dev" $(go list ./... | grep -v /vendor/)
+    - go test -tags="dev" -race $(go list ./... | grep -v /vendor/) -v -coverprofile .testCoverage.txt
+    # Use coverage parsing regex: ^coverage:\s(\d+(?:\.\d+)?%)
+
+frontend:
+  stage: build_frontend
+  tags:
+    - docker
+  image: "node:8"
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - node_modules/
+  script:
+    - cd $CI_PROJECT_DIR/ui
+    - npm install
+    - npm run build
+  artifacts:
+    expire_in: "8 hrs"
+    paths:
+      - ui/dist
+
+compile:
+  stage: build
+  tags:
+    - docker
+  dependencies:
+    - frontend
+  script:
+    # we use tags="dev" so there is no dependency on the prebuilt assets yet
+    - go get -tags="dev" -v git.klink.asia/main/klinkregistry/klinkregistry # get missing dependencies
+
+    # generate assets
+    - go get github.com/shurcooL/vfsgen/cmd/vfsgendev
+    - go generate git.klink.asia/main/klinkregistry/assets
+
+    # dependencies for special platforms (windows)
+    - go get github.com/inconshreveable/mousetrap
+
+    # build binaries -- list of supported plattforms is here:
+    # https://stackoverflow.com/a/20728862
+    - GOOS=linux   GOARCH=amd64         go build -tags "netgo" -o $CI_PROJECT_DIR/klinkregistry.bin git.klink.asia/main/klinkregistry/klinkregistry
+    - GOOS=linux   GOARCH=arm   GOARM=6 go build -tags "netgo" -o $CI_PROJECT_DIR/klinkregistry.arm git.klink.asia/main/klinkregistry/klinkregistry
+    - GOOS=windows GOARCH=amd64         go build -tags "netgo" -o $CI_PROJECT_DIR/klinkregistry.exe git.klink.asia/main/klinkregistry/klinkregistry
+  artifacts:
+    expire_in: "8 hrs"
+    paths:
+      - klinkregistry.bin
+      - klinkregistry.arm
+      - klinkregistry.exe
+
+minify:
+  stage: release
+  tags:
+    - docker
+  dependencies:
+    - compile
+  image:
+    name: znly/upx:latest
+    entrypoint: ["/bin/sh", "-c"]
+  script:
+    - upx --best --brute $CI_PROJECT_DIR/klinkregistry/klinkregistry $CI_PROJECT_DIR/klinkregistry/klinkregistry.arm $CI_PROJECT_DIR/klinkregistry/klinkregistry.exe
+  artifacts:
+    paths:
+      - klinkregistry.bin
+      - klinkregistry.arm
+      - klinkregistry.exe
+  only:
+    - tags
+
+build_image:
+  stage: release
+  tags:
+    - dind
+  image: "docker:latest"
+  services:
+    - docker:dind
+  script:
+    - cd $CI_PROJECT_DIR
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker build -t $CI_REGISTRY_IMAGE:${CI_COMMIT_REF_NAME#v} .
+    - docker push $CI_REGISTRY_IMAGE:${CI_COMMIT_REF_NAME#v}
+#  only:
+#    - tags

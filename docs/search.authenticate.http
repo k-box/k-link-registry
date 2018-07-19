@@ -1,0 +1,14 @@
+POST https://public.klink.asia/api/3.3/data.search HTTP/1.1
+Origin: https://example.com/
+Authorization: Bearer tokentoken
+
+{
+  "params": {
+    "search": "*",
+    "filters": "",
+    "aggregations": {},
+    "limit": 50,
+    "offset": 4400
+  },
+  "id": "request-3d254173"
+}

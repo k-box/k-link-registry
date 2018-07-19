@@ -1,0 +1,355 @@
+---
+openapi: 3.0.0
+info:
+  title: K-Link-Registry
+  description: K-Link-Registry API
+  license:
+    name: GNU AGPLv3
+    url: https://www.gnu.org/licenses/agpl.txt
+  version: 1.0.0
+paths:
+  /applications:
+    get:
+      tags:
+      - Applications
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Application'
+      security:
+      - bearer: []
+    post:
+      tags:
+      - Applications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Application'
+        required: true
+      responses:
+        200:
+          description: Successfully Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+      security:
+      - bearer: []
+  /applications/{appID}:
+    get:
+      tags:
+      - Applications
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+        404:
+          description: Not found
+      security:
+      - bearer: []
+    put:
+      tags:
+      - Applications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Application'
+        required: true
+      responses:
+        200:
+          description: Successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+      security:
+      - bearer: []
+    delete:
+      tags:
+      - Applications
+      responses:
+        200:
+          description: Deletion Successful
+      security:
+      - bearer: []
+    parameters:
+    - name: appID
+      in: path
+      description: The Application ID
+      required: true
+      schema:
+        format: int64
+        type: integer
+  /registrants:
+    get:
+      tags:
+      - Registrants
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Registrant'
+      security:
+      - bearer: []
+    post:
+      tags:
+      - Registrants
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Registrant'
+        required: true
+      responses:
+        200:
+          description: Created Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Registrant'
+      security:
+      - bearer: []
+  /registrants/{registrantID}:
+    get:
+      tags:
+      - Registrants
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Registrant'
+        404:
+          description: Not found
+      security:
+      - bearer: []
+    put:
+      tags:
+      - Registrants
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Registrant'
+        required: true
+      responses:
+        200:
+          description: Updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Registrant'
+      security:
+      - bearer: []
+    delete:
+      tags:
+      - Registrants
+      responses:
+        200:
+          description: Deletion successful
+    parameters:
+    - name: registrantID
+      in: path
+      description: The Registrant ID
+      required: true
+      schema:
+        format: int64
+        type: integer
+  /auth/session:
+    get:
+      tags:
+      - Authentication
+      responses:
+        200:
+          description: Session exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Session'
+        403:
+          description: Unauthenticated
+      security:
+      - bearer: []
+    post:
+      tags:
+      - Authentication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        200:
+          description: Session created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Session'
+  /auth/registrations:
+    post:
+      tags:
+      - Authentication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistrationRequest'
+        required: true
+      responses:
+        200:
+          description: Registration Successful
+  /auth/email-verifications/{token}:
+    patch:
+      summary: Verify an email Address
+      description: Verify the email Address and set a new password
+      parameters:
+      - name: token
+        in: path
+        description: The one-time token
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: No body is required, except if the user has no password set.
+          In this case the "Password" payload is required, as indicated by a 400 Error
+          when leaving it out.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Password'
+        required: false
+      responses:
+        200:
+          description: The email was verified
+        400:
+          description: The email could have been verified, but the user is expected
+            to also set a password
+        404:
+          description: The token was not found or is invalid
+  /auth/password-resets/{token}:
+    patch:
+      summary: Reset a password
+      description: Update the password for the password reset
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Password'
+        required: true
+      responses:
+        200:
+          description: Password successfully changed
+        404:
+          description: The token was not found or is invalid
+    parameters:
+    - name: token
+      in: path
+      description: The one-time token
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    Application:
+      title: Root Type for Application
+      description: The root of the Application type's schema.
+      required:
+      - permissions
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        owner_id:
+          format: int64
+          type: integer
+        name:
+          type: string
+        app_domain:
+          type: string
+        status:
+          type: boolean
+        permissions:
+          type: array
+          items:
+            type: string
+    Registrant:
+      title: Root Type for Registrant
+      description: The root of the Registrant type's schema.
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        email:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+        active:
+          type: boolean
+    Session:
+      title: Root Type for Session
+      description: The root of the Session type's schema.
+      type: object
+      properties:
+        user_id:
+          format: int64
+          type: integer
+        role:
+          type: string
+        token:
+          type: string
+    LoginRequest:
+      title: Root Type for LoginCredentials
+      description: The root of the LoginCredentials type's schema.
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    RegistrationRequest:
+      title: Root Type for RegistrationRequest
+      description: The root of the RegistrationRequest type's schema.
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+    Password:
+      required:
+      - password
+      properties:
+        password:
+          format: password
+          type: string
+  securitySchemes:
+    bearer:
+      type: http
+      description: Bearer Token, can be generated via the Session endpoint.
+      scheme: bearer
+tags:
+- name: Applications
+  description: Endpoints related to Applications
+- name: Registrants
+  description: Endpoints related to Registrants
+- name: Authentication
+  description: Endpoints related to User and Session management

@@ -1,0 +1,30 @@
+This is a follow up to #473 (closed)
+
+The main missing points, found after some testing:
+
+
+
+ As an admin redirect me to the overview of registrants after adding or editing a registrant.
+
+ As an admin when editing a registrant, the message appears even before editing: "Registrant modified successfully."
+
+ As an admin I should be able to change its email address.
+
+ As an admin I should be able to change the name of the Registry, so to say the ICSD Network main title.
+
+ As a registrant I can not reset my password through the link in my profile.
+
+
+ Further for discussion:
+
+What permissions should registrants have on the applications they create? Or in other words: can a registrant create a application which can potentially delete all files in a network? I guess not. How should this workflow look like.
+
+This would be the simplest:
+
+
+
+ As a registrant I should not be able to change permissions on applications
+
+ If an registrant creates an application only the data-search and data-view permission shall be granted.
+
+ If an registrant wants more permissions, there should be a button to ask the admin(s) to grant more access.

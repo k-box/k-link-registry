@@ -1,0 +1,8 @@
+login:
+  title: "Log In"
+  email: "E-Mail"
+  password: "Passwort"
+  submit: "Einloggen"
+  forgot_password_link: "Passwort vergessen?"
+  sign_up_link: "Noch kein Konto? Anmelden!"
+  wrong_credentials: "Nutzername oder Password inkorrekt."

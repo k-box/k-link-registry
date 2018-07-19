@@ -1,0 +1,11 @@
+
+POST https://example.com/registry/api/1.0/application.authenticate HTTP/1.1
+
+{
+    "id": "15",
+    "params": {
+        "permissions": ["data-search"],
+        "app_url": "https://example.com",
+        "app_secret": "tokentoken"
+    }
+}

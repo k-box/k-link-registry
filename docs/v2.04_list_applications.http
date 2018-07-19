@@ -1,0 +1,3 @@
+
+GET  http://localhost:8000/registry/api/2.0/applications HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlJPTEVfVVNFUiIsIm5hbWUiOiJQYXVsIiwiZXhwIjoxNTI3OTI5MTQyLCJpc3MiOiJSZWdpc3RyeSJ9.Srj9aRJpyI6XXio8omL40tb6rSDkbQiiRxUot5gnGzM

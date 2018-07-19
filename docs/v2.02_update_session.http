@@ -1,0 +1,3 @@
+
+GET  http://localhost:8001/registry/api/2.0/auth/session HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6IjEiLCJSb2xlIjoiYWRtaW4iLCJEaXNwbGF5TmFtZSI6IlBhdWwiLCJleHAiOjE1MjcyMzgyOTUsImlzcyI6IlJlZ2lzdHJ5In0.yiXxECbLpsPKHDKmNcZjecwOMBsIF1LuHdNb42I7nTk

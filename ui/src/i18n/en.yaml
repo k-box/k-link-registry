@@ -1,0 +1,47 @@
+login:
+  title: Log in
+  email: Email
+  password: Password
+  submit: Log in
+  forgot_password_link: Forgot password?
+  sign_up_link: Don't have an account? Sign Up
+  wrong_credentials: Username or Password incorrect.
+
+signup:
+  title: Register account
+  name: Display Name
+  email: Email Address
+  submit: Register my account
+  login_link: Already have an account? Log in
+
+reset:
+  title: Reset password
+  email: Email
+  submit: Reset my password
+  login_link: Remembered your Password? Log in
+
+header:
+  title: Registry
+  logout: Log out
+
+sidebar:
+  registrants: Registrants
+  applications: Applications
+  permissions: Permissions
+
+applications:
+  title: Applications
+  button_new: New Application
+  button_edit: Edit
+
+registrants:
+  name: name
+  active: Active
+  actions: Actions
+  title: Registrants
+  button_new: New Registrant
+  button_edit: Edit
+
+permissions:
+  name: name
+  title: Permissions

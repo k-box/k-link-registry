@@ -1,0 +1,33 @@
+version: '2.1'
+
+networks:
+    internal:
+    web:
+        external:
+            name: reverseproxy_web
+
+services:
+    database:
+        image: mariadb:10
+        environment:
+        networks:
+            - internal
+    web:
+        image: docker.klink.asia/main/klinkregistry:latest
+        environment:
+            - "REGISTRY_DB_HOST=database"
+            - "REGISTRY_DB_NAME=kregistry"
+            - "REGISTRY_DB_USER=kregistry"
+            - "REGISTRY_DB_PASS=kregistry"
+            - "REGISTRY_HTTP_LISTEN=:80"
+            - "REGISTRY_HTTP_SECRET=picksomethinglongandsecurehere_e17ag"
+            - "REGISTRY_ADMIN_USERNAME=admin@k-box.net"
+            - "REGISTRY_ADMIN_PASSWORD=password"
+        labels:
+            - "traefik.enable=true"
+            - "traefik.frontend.rule=Host: example.com"
+            - "traefik.docker.network=reverseproxy_web"
+            - "traefik.port=80"
+        networks:
+            - web
+            - internal
