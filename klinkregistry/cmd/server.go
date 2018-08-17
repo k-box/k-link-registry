@@ -42,6 +42,7 @@ configuration by registrants.`,
 			SMTPUser:         viper.GetString("smtp_user"),
 			SMTPPassword:     viper.GetString("smtp_pass"),
 			SMTPFrom:         viper.GetString("smtp_from"),
+			NetworkName:      viper.GetString("name"),
 			AdminUsername:    viper.GetString("admin_username"),
 			AdminPassword:    viper.GetString("admin_password"),
 		}
@@ -91,6 +92,7 @@ func init() {
 	serverCmd.Flags().String("domain", "example.com", "Domain, which will be used for absolute link generation")
 	serverCmd.Flags().String("base-path", "/", "Root path where the web-app will be served, no trailing slash")
 	serverCmd.Flags().String("secret", "", "Secret key for HTTP Sessions")
+	serverCmd.Flags().String("name", "K-Link Registry", "Name of this instance")
 	serverCmd.Flags().String("admin-username", "", "email address of primary admin")
 	serverCmd.Flags().String("admin-password", "", "password of primary admin")
 
@@ -99,6 +101,7 @@ func init() {
 	viper.BindPFlag("http_write_timeout", serverCmd.Flags().Lookup("write-timeout"))
 	viper.BindPFlag("http_max_header", serverCmd.Flags().Lookup("max-header"))
 	viper.BindPFlag("http_base_path", serverCmd.Flags().Lookup("base-path"))
+	viper.BindPFlag("name", serverCmd.Flags().Lookup("name"))
 	viper.BindPFlag("http_domain", serverCmd.Flags().Lookup("domain"))
 	viper.BindPFlag("http_secret", serverCmd.Flags().Lookup("secret"))
 

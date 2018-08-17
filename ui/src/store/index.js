@@ -11,6 +11,9 @@ const state = {
     .querySelector('meta[name="base"]')
     .getAttribute("content")
     .replace(/\/$/, ''), // remove trailing slash
+  networkName: document
+    .querySelector('meta[name="network"]')
+    .getAttribute("content"),
   jwt: '',
   user: {
     id: 0,

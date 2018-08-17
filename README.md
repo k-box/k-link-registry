@@ -51,6 +51,7 @@ Used by the `server` subcommand
 | http-read-timeout  | `REGISTRY_HTTP_READ_TIMEOUT`  | Timeout duration for HTTP read (default: "10s")              |
 | http-write-timeout | `REGISTRY_HTTP_WRITE_TIMEOUT` | Timeout duration for HTTP write (default: "10s")             |
 | http-max-header    | `REGISTRY_HTTP_MAX_HEADER`    | Maximal HTTP Header size, in bytes. (default: 1MB)           |
+| name               | `REGISTRY_NAME`               | Name of this instance. (default: "K-Link Registry")          |
 | domain             | `REGISTRY_HTTP_DOMAIN`        | Domain used for generation of links (default: "example.com") |
 | base-path          | `REGISTRY_HTTP_BASE_PATH`     | Base path the application is served on (default: "/")        |
 | http-secret        | `REGISTRY_HTTP_SECRET`        | Secret string for session generation (default: generated)    |
