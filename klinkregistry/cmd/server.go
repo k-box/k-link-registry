@@ -15,6 +15,17 @@ import (
 	"github.com/spf13/viper"
 )
 
+var (
+	DefaultPermissions = []string{
+		"data-add",
+		"data-edit",
+		"data-remove-all",
+		"data-remove-own",
+		"data-search",
+		"data-view",
+	}
+)
+
 // serverCmd represents the serve command
 var serverCmd = &cobra.Command{
 	Use:     "server",
@@ -65,12 +76,23 @@ configuration by registrants.`,
 			log.Printf("Error creating Database: %s", err.Error())
 		}
 
+		// try to migrate to latest database revision
+		if err := migrate(c, "up"); err != nil {
+			log.Printf("Error running initial migration: %s", err)
+		}
+
 		// try to create admin user, if specified
 		if c.AdminUsername != "" && c.AdminPassword != "" {
 			err := createAdminIfNotExist(db, c.AdminUsername, c.AdminPassword)
 			if err != nil {
 				log.Printf("Error creating admin user: %s", err)
 			}
+		}
+
+		// try to create default permissions
+		err = createPermissionsIfNotExist(db, DefaultPermissions)
+		if err != nil {
+			log.Printf("Error creating default permissions: %s", err)
 		}
 
 		s.SetStore(db)
@@ -123,6 +145,23 @@ func createAdminIfNotExist(db klinkregistry.Storer, username, password string) e
 		}
 	} else if err != nil {
 		return errors.Wrap(err, "Could not query for admin user")
+	}
+
+	return nil
+}
+
+func createPermissionsIfNotExist(db klinkregistry.Storer, permissions []string) error {
+	perms, err := db.ListPermissions()
+	if db.IsNotFound(err) || len(perms) == 0 {
+		for _, permission := range permissions {
+			p := klinkregistry.Permission{Name: permission}
+			if err := db.CreatePermission(&p); err != nil {
+				return errors.Wrapf(err, "Error creating permission %s", permission)
+			}
+		}
+
+	} else if err != nil {
+		return errors.Wrap(err, "Error querying for permissions")
 	}
 
 	return nil
