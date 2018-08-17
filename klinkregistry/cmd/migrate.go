@@ -11,6 +11,7 @@ import (
 	"git.klink.asia/main/klinkregistry"
 	"git.klink.asia/main/klinkregistry/assets"
 	"git.klink.asia/main/klinkregistry/database/mysql"
+	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -46,61 +47,7 @@ revision number.
 			DatabaseName:     viper.GetString("db_name"),
 		}
 
-		dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?multiStatements=true",
-			c.DatabaseUser, c.DatabasePassword,
-			c.DatabaseHost, c.DatabaseName)
-
-		db, err := sql.Open("mysql", dsn)
-		if err != nil {
-			log.Printf("Error creating Database: %s", err.Error())
-		}
-
-		// if no assets dir is specified, use the internally packaged assets.
-		// otherwise initialize the external assets file.
-		var fs http.FileSystem
-		if c.AssetDir == "" {
-			fs = assets.Assets
-		} else {
-			fs = http.Dir(c.AssetDir)
-		}
-
-		migrator, err := mysql.GetMigrator(db, fs, "/migrations/mysql")
-		if err != nil {
-			fmt.Printf("Error creating migrator instance: %s\n", err)
-			return
-		}
-
-		wl := wrappedLogger{log.New(os.Stdout, "", log.LstdFlags)}
-		migrator.Log = wl
-
-		var mErr error // migration error
-
-		switch args[0] {
-		case "info":
-			version, dirty, err := migrator.Version()
-			if err != nil {
-				fmt.Printf("Error while getting info: %s\n", err)
-				return
-			}
-			fmt.Printf("\nDatabase revision: %d, Dirty: %t\n", version, dirty)
-			return
-		case "up":
-			mErr = migrator.Up()
-		case "down":
-			mErr = migrator.Down()
-		default:
-			revision, err := strconv.ParseUint(args[0], 10, 32)
-			if err != nil {
-				fmt.Printf("Error: could not understand revision '%s'\n", args[0])
-				return
-			}
-
-			mErr = migrator.Migrate(uint(revision))
-		}
-
-		if mErr != nil {
-			fmt.Printf("Migration failed with error:\n%s\n", err)
-		}
+		migrate(c, args[0])
 	},
 }
 
@@ -114,4 +61,61 @@ type wrappedLogger struct {
 
 func (l wrappedLogger) Verbose() bool {
 	return true
+}
+
+func migrate(config *klinkregistry.Config, command string) error {
+	// if no assets dir is specified, use the internally packaged assets.
+	// otherwise initialize the external assets file.
+	var fs http.FileSystem
+	if config.AssetDir == "" {
+		fs = assets.Assets
+	} else {
+		fs = http.Dir(config.AssetDir)
+	}
+
+	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?multiStatements=true",
+		config.DatabaseUser, config.DatabasePassword,
+		config.DatabaseHost, config.DatabaseName)
+
+	db, err := sql.Open("mysql", dsn)
+	if err != nil {
+		log.Printf("Error creating Database: %s", err.Error())
+	}
+
+	migrator, err := mysql.GetMigrator(db, fs, "/migrations/mysql")
+	if err != nil {
+		return errors.Wrap(err, "Error creating migrator instance")
+	}
+
+	wl := wrappedLogger{log.New(os.Stdout, "", log.LstdFlags)}
+	migrator.Log = wl
+
+	var mErr error // migration error
+
+	switch command {
+	case "info":
+		version, dirty, err := migrator.Version()
+		if err != nil {
+			return errors.Wrap(err, "Error getting migrator info")
+		}
+		fmt.Printf("\nDatabase revision: %d, Dirty: %t\n", version, dirty)
+		return nil
+	case "up":
+		mErr = migrator.Up()
+	case "down":
+		mErr = migrator.Down()
+	default:
+		revision, err := strconv.ParseUint(command, 10, 32)
+		if err != nil {
+			return errors.Wrap(err, "Could not parse revision")
+		}
+
+		mErr = migrator.Migrate(uint(revision))
+	}
+
+	if mErr != nil {
+		return errors.Wrap(err, "Migration failed")
+	}
+
+	return nil
 }
