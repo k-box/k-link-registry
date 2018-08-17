@@ -13,3 +13,17 @@ func (db Database) ListPermissions() ([]*klinkregistry.Permission, error) {
 
 	return models, nil
 }
+
+// CreatePermission adds a new Permission inside the database
+func (db Database) CreatePermission(p *klinkregistry.Permission) error {
+	_, err := db.db.NamedExec(`INSERT INTO permission (
+		name
+	) VALUES (
+		:name
+	)`, &p)
+
+	if err != nil {
+		return err
+	}
+	return nil
+}

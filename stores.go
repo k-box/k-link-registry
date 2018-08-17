@@ -31,6 +31,7 @@ type ApplicationStorer interface {
 // PermissionStorer implements all methods to persist Permissions
 type PermissionStorer interface {
 	ListPermissions() ([]*Permission, error)
+	CreatePermission(*Permission) error
 }
 
 // A Storer implements all neccessary database methods
