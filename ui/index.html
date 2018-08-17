@@ -11,6 +11,7 @@ Everything fancy that is happening in here. -->
 
   <!-- define variables that will be filled in by the backend -->
   <meta name="base" content="{{ .BaseURL }}">
+  <meta name="network" content="{{ .NetworkName }}">
 
   <!-- generated code and stylesheets will be inserted here -->
   <% for (var chunk of webpack.chunks) {

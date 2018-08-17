@@ -25,6 +25,8 @@ type Emailer interface {
 type Config struct {
 	AssetDir string // use embedded assets if empty
 
+	NetworkName string // Name of the managed Network
+
 	HTTPListen       string
 	HTTPMaxHeader    int
 	HTTPReadTimeout  time.Duration

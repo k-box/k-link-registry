@@ -5,7 +5,7 @@
         <div class="auth-container">
             <div class="branding">
                 <img src="@/assets/img/klink-logo-web.svg" alt="Klink logo">
-                <div class="platform">ICSD Network Registry</div>
+                <div class="platform">{{ $store.state.networkName }}</div>
             </div>
             <router-view></router-view>
         </div>
@@ -20,7 +20,8 @@
   bottom: 0;
   min-width: 100%;
   min-height: 100%;
-  background: linear-gradient(rgba(0, 144, 255, 0.85), rgba(0, 144, 255, 0.85)), url(//test.klink.asia/images/land.jpg);
+  background: linear-gradient(rgba(0, 144, 255, 0.85), rgba(0, 144, 255, 0.85)),
+    url(//test.klink.asia/images/land.jpg);
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -54,7 +55,7 @@
 
 .form-auth {
   padding: 30px;
-  box-shadow: rgba(0,0,0,0.2) 0px 0px 20px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 20px;
   border: none;
   border-radius: 3px;
   background: rgba(255, 255, 255, 1);
@@ -88,3 +89,4 @@
   }
 }
 </style>
+
