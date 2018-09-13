@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"time"
 
-	"git.klink.asia/main/klinkregistry/assets"
-	"git.klink.asia/main/klinkregistry/mail"
+	"github.com/k-box/k-link-registry/assets"
+	"github.com/k-box/k-link-registry/mail"
 	"github.com/pkg/errors"
 )
 

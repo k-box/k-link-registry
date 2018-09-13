@@ -8,9 +8,9 @@ import (
 
 	"github.com/pkg/errors"
 
-	"git.klink.asia/main/klinkregistry/database/mysql"
+	"github.com/k-box/k-link-registry/database/mysql"
 
-	"git.klink.asia/main/klinkregistry"
+	"github.com/k-box/k-link-registry"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )

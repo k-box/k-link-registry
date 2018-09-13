@@ -8,9 +8,9 @@ import (
 	"os"
 	"strconv"
 
-	"git.klink.asia/main/klinkregistry"
-	"git.klink.asia/main/klinkregistry/assets"
-	"git.klink.asia/main/klinkregistry/database/mysql"
+	"github.com/k-box/k-link-registry"
+	"github.com/k-box/k-link-registry/assets"
+	"github.com/k-box/k-link-registry/database/mysql"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"

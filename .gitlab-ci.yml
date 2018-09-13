@@ -1,7 +1,7 @@
 image: golang:1.10
 
 variables:
-  REPO_NAME: git.klink.asia/main/klinkregistry
+  REPO_NAME: github.com/k-box/k-link-registry
 
 # The problem is that to be able to use go get, one needs to put
 # the repository in the $GOPATH. So for example if your gitlab domain
@@ -58,20 +58,20 @@ compile:
     - frontend
   script:
     # we use tags="dev" so there is no dependency on the prebuilt assets yet
-    - go get -tags="dev" -v git.klink.asia/main/klinkregistry/klinkregistry # get missing dependencies
+    - go get -tags="dev" -v github.com/k-box/k-link-registry/klinkregistry # get missing dependencies
 
     # generate assets
     - go get github.com/shurcooL/vfsgen/cmd/vfsgendev
-    - go generate git.klink.asia/main/klinkregistry/assets
+    - go generate github.com/k-box/k-link-registry/assets
 
     # dependencies for special platforms (windows)
     - go get github.com/inconshreveable/mousetrap
 
     # build binaries -- list of supported plattforms is here:
     # https://stackoverflow.com/a/20728862
-    - GOOS=linux   GOARCH=amd64         go build -tags "netgo" -o $CI_PROJECT_DIR/klinkregistry.bin git.klink.asia/main/klinkregistry/klinkregistry
-    - GOOS=linux   GOARCH=arm   GOARM=6 go build -tags "netgo" -o $CI_PROJECT_DIR/klinkregistry.arm git.klink.asia/main/klinkregistry/klinkregistry
-    - GOOS=windows GOARCH=amd64         go build -tags "netgo" -o $CI_PROJECT_DIR/klinkregistry.exe git.klink.asia/main/klinkregistry/klinkregistry
+    - GOOS=linux   GOARCH=amd64         go build -tags "netgo" -o $CI_PROJECT_DIR/klinkregistry.bin github.com/k-box/k-link-registry/klinkregistry
+    - GOOS=linux   GOARCH=arm   GOARM=6 go build -tags "netgo" -o $CI_PROJECT_DIR/klinkregistry.arm github.com/k-box/k-link-registry/klinkregistry
+    - GOOS=windows GOARCH=amd64         go build -tags "netgo" -o $CI_PROJECT_DIR/klinkregistry.exe github.com/k-box/k-link-registry/klinkregistry
   artifacts:
     expire_in: "8 hrs"
     paths:

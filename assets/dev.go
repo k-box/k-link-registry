@@ -12,8 +12,8 @@ import (
 
 // Assets contains files that will be included in the binary
 var Assets = union.New(map[string]http.FileSystem{
-	"/migrations": http.Dir(importPathToDir("git.klink.asia/main/klinkregistry/assets/migrations")),
-	"/static":     http.Dir(importPathToDir("git.klink.asia/main/klinkregistry/assets/static")),
+	"/migrations": http.Dir(importPathToDir("github.com/k-box/k-link-registry/assets/migrations")),
+	"/static":     http.Dir(importPathToDir("github.com/k-box/k-link-registry/assets/static")),
 })
 
 // importPathToDir is a helper function that resolves the absolute path of

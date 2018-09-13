@@ -19,7 +19,7 @@ import (
 	"log"
 	"os"
 
-	"git.klink.asia/main/klinkregistry"
+	"github.com/k-box/k-link-registry"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )

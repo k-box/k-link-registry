@@ -1,6 +1,6 @@
 package mysql
 
-import "git.klink.asia/main/klinkregistry"
+import "github.com/k-box/k-link-registry"
 
 // ListPermissions returns a list off all permissions inside the database
 func (db Database) ListPermissions() ([]*klinkregistry.Permission, error) {

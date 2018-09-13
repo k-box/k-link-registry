@@ -3,7 +3,7 @@ package mysql
 import (
 	"strings"
 
-	"git.klink.asia/main/klinkregistry"
+	"github.com/k-box/k-link-registry"
 )
 
 // ApplicationRow represents an Application inside the database

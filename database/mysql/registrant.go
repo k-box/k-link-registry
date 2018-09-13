@@ -1,7 +1,7 @@
 package mysql
 
 import (
-	"git.klink.asia/main/klinkregistry"
+	"github.com/k-box/k-link-registry"
 )
 
 // CreateRegistrant adds a new Registrant inside the database
