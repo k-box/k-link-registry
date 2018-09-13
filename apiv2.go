@@ -175,6 +175,7 @@ func (s *Server) handlePostRegistration() http.HandlerFunc {
 			`hello, welcome to the K-Link registry. Please use this link to verify your mail address and set a password: `+verificationLink,
 		); err != nil {
 			jsonResponse(w, API2ErrEmail)
+			log.Printf("Mail Error: %s", err)
 			return
 		}
 

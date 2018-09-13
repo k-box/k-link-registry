@@ -30,7 +30,7 @@ func (m SMTPMailer) Email(recepient, subject, html, text string) error {
 	message.SetBody("text/plain", text)
 
 	err := mail.DialAndSend(message)
-	//message.Reset() // optional here: prepare for re-use
+	message.Reset() // optional here: prepare for re-use
 
 	return err
 }

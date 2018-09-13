@@ -20,7 +20,7 @@ func (m DebugMailer) Email(recepient, subject, html, text string) error {
 
 	fmt.Fprintf(m.Destination,
 		`TO: %s\nSUBJECT: %s
-		%s\n`, recepient, subject, text)
+		%s\n\n`, recepient, subject, text)
 
 	return nil
 }
