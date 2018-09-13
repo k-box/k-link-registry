@@ -30,7 +30,7 @@ Vue.prototype.$showError = function (error) {
     timeout: null,
     buttons: [
       Noty.button(i18n.t('buttons.reportIssue'), '', function () {
-        window.open('https://git.klink.asia/main/k-link-registry/issues/new');
+        window.open('https://github.com/k-box/k-link-registry/issues/new');
       }),
       Noty.button(i18n.t('buttons.close'), '', function () {
         n.close();
