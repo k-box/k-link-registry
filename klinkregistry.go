@@ -2,9 +2,14 @@ package klinkregistry
 
 import (
 	"crypto/rand"
+	"fmt"
 	"math"
 	"net/http"
 	"time"
+
+	"github.com/volatiletech/authboss"
+	abclientstate "github.com/volatiletech/authboss-clientstate"
+	"github.com/volatiletech/authboss/defaults"
 
 	"github.com/k-box/k-link-registry/assets"
 	"github.com/k-box/k-link-registry/mail"
@@ -60,6 +65,7 @@ type Server struct {
 	store    Storer
 	config   *Config
 	sessions SessionsProvider
+	auth     *authboss.Authboss
 }
 
 // SetStore is a setter for setting a database inside the application.
@@ -67,6 +73,35 @@ type Server struct {
 // FIXME
 func (s *Server) SetStore(store Storer) error {
 	s.store = store
+	return nil
+}
+
+// InitSessions initializes the auth and sessions module,
+// depends on an already initialized Database.
+func (s *Server) initSessions() error {
+	s.auth = authboss.New()
+	s.auth.Config = authboss.Config{}
+	s.auth.Config.Storage.Server = s.store
+	s.auth.Config.Storage.SessionState = abclientstate.NewSessionStorer(session, sessionStoreKey, nil)
+	s.auth.Config.Storage.CookieState = cookieStore = abclientstate.NewCookieStorer(cookieStoreKey, nil)
+
+	s.auth.Config.Paths.RootURL = fmt.Sprintf(
+		"%s://%s%s",
+		"https",
+		s.config.HTTPDomain,
+		s.config.HTTPBasePath,
+	)
+
+	s.auth.Config.Paths.Mount = "/api/auth2"
+	s.auth.Config.Paths.AuthLoginOK = "/applications"
+	s.auth.Config.Paths.ConfirmOK = "/auth/login"
+	s.auth.Config.Paths.ConfirmNotOK = "/auth/login"
+	s.auth.Config.Paths.LogoutOK = "/auth/login"
+	s.auth.Config.Paths.RegisterOK = "/auth/login"
+
+	s.auth.Config.Core.ViewRenderer = defaults.JSONRenderer{}
+	// s.auth.Config.Core.MailRenderer =
+	// s.auth.Config.Core.BodyReader = 
 	return nil
 }
 
@@ -117,6 +152,7 @@ func NewServer(config *Config) (*Server, error) {
 
 	s.initSMTP()
 	s.initRoutes()
+	s.initSessions()
 
 	return s, nil
 }

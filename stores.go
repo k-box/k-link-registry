@@ -14,14 +14,6 @@ type RegistrantStorer interface {
 	DeleteRegistrant(id int64) error
 }
 
-// EmailVerificationStorer implements all methods to persist email verifications
-type EmailVerificationStorer interface {
-	CreateEmailVerification(*EmailVerification) error
-	GetEmailVerificationByEmail(string) (*EmailVerification, error)
-	GetEmailVerificationByToken(string) (*EmailVerification, error)
-	DeleteEmailVerification(email string) error
-}
-
 // ApplicationStorer implements all methods to persist Applications
 type ApplicationStorer interface {
 	CreateApplication(*Application) error
@@ -44,6 +36,5 @@ type Storer interface {
 	RegistrantStorer
 	ApplicationStorer
 	PermissionStorer
-	EmailVerificationStorer
 	IsNotFound(error) bool
 }
