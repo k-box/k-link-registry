@@ -7,13 +7,23 @@ networks:
             name: reverseproxy_web
 
 services:
+services:
     database:
         image: mariadb:10
         environment:
+            - "MYSQL_ROOT_PASSWORD=healthcheck"
+            - "MYSQL_USER=kregistry"
+            - "MYSQL_DATABASE=kregistry"
+            - "MYSQL_PASSWORD=kregistry"
+        healthcheck:
+            test: "/usr/bin/mysql -hlocalhost -uroot -phealthcheck --execute \"SHOW DATABASES;\""
+            interval: 2s
+            timeout: 5s
+            retries: 30
         networks:
             - internal
     web:
-        image: docker.klink.asia/main/klinkregistry:latest
+        build: .
         environment:
             - "REGISTRY_DB_HOST=database"
             - "REGISTRY_DB_NAME=kregistry"
@@ -31,3 +41,6 @@ services:
         networks:
             - web
             - internal
+        depends_on:
+            database:
+                condition: service_healthy
