@@ -1,5 +1,9 @@
 package klinkregistry
 
+import (
+	"github.com/volatiletech/authboss"
+)
+
 // RegistrantStorer implements all methods to persist Registrants
 type RegistrantStorer interface {
 	CreateRegistrant(*Registrant) error
@@ -36,6 +40,7 @@ type PermissionStorer interface {
 
 // A Storer implements all neccessary database methods
 type Storer interface {
+	authboss.ServerStorer
 	RegistrantStorer
 	ApplicationStorer
 	PermissionStorer

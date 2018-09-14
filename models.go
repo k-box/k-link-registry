@@ -2,45 +2,7 @@ package klinkregistry
 
 import (
 	"time"
-
-	"golang.org/x/crypto/bcrypt"
 )
-
-// Registrant contains information about a Registrant. The Email is set after
-// registration, but may or may not be confirmed yet. The user is inactive by
-// default, until activated by an administrator or owner.
-type Registrant struct {
-	ID        int64  `db:"registrant_id"`
-	Email     string `db:"email"`
-	Password  []byte `db:"password"`
-	Name      string `db:"name"`
-	Role      string `db:"role"`
-	Active    bool   `db:"status"`
-	LastLogin int64  `db:"last_login"`
-}
-
-// SetPass sets the value of the password hash to match the provided password.
-// The Registrant needs to be saved afterwards to persist the changes.
-func (u *Registrant) SetPass(passwd string) error {
-	hash, err := bcrypt.GenerateFromPassword([]byte(passwd), bcrypt.DefaultCost)
-	if err != nil {
-		return err
-	}
-
-	// no errors
-	u.Password = hash
-	return nil
-}
-
-// CheckPass returns true if the provided password matches the stored password
-// hash. Always returns false if the password hash is unset.
-func (u *Registrant) CheckPass(password string) error {
-	err := bcrypt.CompareHashAndPassword(
-		u.Password,
-		[]byte(password))
-
-	return err
-}
 
 // Application contains information about a registered Application.
 type Application struct {

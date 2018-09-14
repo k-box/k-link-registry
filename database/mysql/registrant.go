@@ -68,7 +68,14 @@ func (db Database) ReplaceRegistrant(r *klinkregistry.Registrant) error {
 		name = :name,
 		role = :role,
 		status = :status,
-		last_login = :last_login WHERE registrant_id = :registrant_id`, &r)
+		last_login = :last_login,
+		confirmed = :confirmed,
+		confirm_selector = :confirm_selector,
+		confirm_verifier = :confirm_verifier,
+		recover_selector = :recover_selector,
+		recover_verifier = :recover_verifier,
+		recover_expiry = :recover_expiry
+		WHERE registrant_id = :registrant_id`, &r)
 
 	return err
 }

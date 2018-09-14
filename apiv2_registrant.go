@@ -18,13 +18,19 @@ const (
 
 // RegistrantModel is the JSON representation of a registrant
 type RegistrantModel struct {
-	ID        int64  `json:"id"`
-	Email     string `json:"email"`
-	Password  []byte `json:"-"`
-	Name      string `json:"name"`
-	Role      string `json:"role"`
-	Active    bool   `json:"active"`
-	LastLogin int64  `json:"last_login"`
+	ID              int64  `json:"id"`
+	Email           string `json:"email"`
+	Password        []byte `json:"-"`
+	Name            string `json:"name"`
+	Role            string `json:"role"`
+	Active          bool   `json:"active"`
+	LastLogin       int64  `json:"last_login"`
+	Confirmed       bool   `json:"-"`
+	ConfirmSelector string `json:"-"`
+	ConfirmVerifier string `json:"-"`
+	RecoverSelector string `json:"-"`
+	RecoverVerifier string `json:"-"`
+	RecoverExpiry   int64  `json:"-"`
 }
 
 // SetPasswordRequest contains a new password to be set
