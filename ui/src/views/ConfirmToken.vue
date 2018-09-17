@@ -6,7 +6,7 @@
       </div>
 
       <h2 class="is-size-3 has-text-centered">{{ $t('email_verification.title') }}</h2>
-      <template v-if="!!email_verification.require_password">
+      <template v-if="email_verification.require_password || true">
         <p>{{ $t('email_verification.password_text') }}</p>
         <input v-model="confirmation.password" name="password" type="password" class="input is-medium is-shadowless"
         :placeholder="$t('email_verification.password')" required>
@@ -31,7 +31,7 @@ export default {
   data: function() {
     return {
       email_verification: {
-        require_password: false,
+        require_password: true,
         display_name: ""
       },
       confirmation: {
