@@ -53,6 +53,8 @@ export default {
         .newRegistration(this.registration)
         .then(registrant => {
           this.success = true;
+          this.$showSuccess("User successfully registered");
+          this.$router.push({ name: "Log in" });
         })
         .catch(e => {
           this.errors.push(e);

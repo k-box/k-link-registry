@@ -2,6 +2,7 @@ package klinkregistry
 
 import (
 	"crypto/rand"
+	"log"
 	"math"
 	"net/http"
 	"time"
@@ -73,6 +74,7 @@ func (s *Server) initSMTP() error {
 	if s.config.SMTPHost == "" {
 		// Init debug mailer if hostname is empty
 		s.email = &mail.DebugMailer{}
+		log.Println("Warning: Using debug mailer")
 		return nil
 	}
 

@@ -32,11 +32,10 @@ func (s *Server) initRoutes() {
 			r.Get("/session", s.handleGetSession())
 
 			r.Post("/registrations", s.handlePostRegistration())
+			r.Post("/password-resets", s.handlePostPasswordReset())
 
-			r.Get("/email-verification/{token}", s.handleGetVerifyEmail())
-			r.Post("/email-verification/{token}", s.handlePostVerifyEmail())
-
-			r.Post("/change-password/{token}", s.handlePostSetPassword())
+			r.Get("/email-verifications/{token:[a-f0-9-]+}", s.handleGetVerifyEmail())
+			r.Post("/email-verifications/{token:[a-f0-9-]+}", s.handlePostVerifyEmail())
 		})
 
 		// Registrant endpoints

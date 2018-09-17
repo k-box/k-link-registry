@@ -6,9 +6,9 @@
       </div>
 
       <h2 class="is-size-3 has-text-centered">{{ $t('reset.title') }}</h2>
-      <input v-model="email" name="email" type="email" class="input is-medium is-shadowless"
+      <input v-model="reset_request.email" name="email" type="email" class="input is-medium is-shadowless"
       :placeholder="$t('reset.email')" required autofocus>
-      <button class="button is-medium is-fullwidth is-info" type="submit">{{ $t('reset.submit') }}</button>
+      <button @click="resetPassword" class="button is-medium is-fullwidth is-info" type="submit">{{ $t('reset.submit') }}</button>
     </form>
     <div class="has-text-centered">
       <router-link to="/auth/log-in" class="has-text-white">{{ $t('reset.login_link') }}</router-link>
@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import * as api from "@/utils/api";
 import auth from "@/utils/auth";
 import { mapState } from "vuex";
 
@@ -25,6 +26,9 @@ export default {
   props: ["dependencies"],
   data: function() {
     return {
+      reset_request: {
+        email: ""
+      },
       wrong: false,
       email: ""
     };
@@ -38,9 +42,19 @@ export default {
     }
   },
   methods: {
-    submit(event) {
+    resetPassword(event) {
       event.preventDefault();
       event.stopPropagation();
+
+      api
+        .resetPassword(this.reset_request)
+        .then(registrant => {
+          this.$showSuccess("Password reset email sent");
+          this.$router.push({ name: "Log in" });
+        })
+        .catch(e => {
+          this.$showError("Error generating a reset mail");
+        });
     }
   }
 };

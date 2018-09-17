@@ -1,4 +1,3 @@
----
 openapi: 3.0.0
 info:
   title: K-Link-Registry
@@ -11,7 +10,7 @@ paths:
   /applications:
     get:
       tags:
-      - Applications
+        - Applications
       responses:
         200:
           description: Success
@@ -20,17 +19,17 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Application'
+                  $ref: "#/components/schemas/Application"
       security:
-      - bearer: []
+        - bearer: []
     post:
       tags:
-      - Applications
+        - Applications
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Application'
+              $ref: "#/components/schemas/Application"
         required: true
       responses:
         200:
@@ -38,32 +37,32 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Application'
+                $ref: "#/components/schemas/Application"
       security:
-      - bearer: []
+        - bearer: []
   /applications/{appID}:
     get:
       tags:
-      - Applications
+        - Applications
       responses:
         200:
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Application'
+                $ref: "#/components/schemas/Application"
         404:
           description: Not found
       security:
-      - bearer: []
+        - bearer: []
     put:
       tags:
-      - Applications
+        - Applications
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Application'
+              $ref: "#/components/schemas/Application"
         required: true
       responses:
         200:
@@ -71,29 +70,29 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Application'
+                $ref: "#/components/schemas/Application"
       security:
-      - bearer: []
+        - bearer: []
     delete:
       tags:
-      - Applications
+        - Applications
       responses:
         200:
           description: Deletion Successful
       security:
-      - bearer: []
+        - bearer: []
     parameters:
-    - name: appID
-      in: path
-      description: The Application ID
-      required: true
-      schema:
-        format: int64
-        type: integer
+      - name: appID
+        in: path
+        description: The Application ID
+        required: true
+        schema:
+          format: int64
+          type: integer
   /registrants:
     get:
       tags:
-      - Registrants
+        - Registrants
       responses:
         200:
           description: Success
@@ -102,17 +101,17 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Registrant'
+                  $ref: "#/components/schemas/Registrant"
       security:
-      - bearer: []
+        - bearer: []
     post:
       tags:
-      - Registrants
+        - Registrants
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Registrant'
+              $ref: "#/components/schemas/Registrant"
         required: true
       responses:
         200:
@@ -120,32 +119,32 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Registrant'
+                $ref: "#/components/schemas/Registrant"
       security:
-      - bearer: []
+        - bearer: []
   /registrants/{registrantID}:
     get:
       tags:
-      - Registrants
+        - Registrants
       responses:
         200:
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Registrant'
+                $ref: "#/components/schemas/Registrant"
         404:
           description: Not found
       security:
-      - bearer: []
+        - bearer: []
     put:
       tags:
-      - Registrants
+        - Registrants
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Registrant'
+              $ref: "#/components/schemas/Registrant"
         required: true
       responses:
         200:
@@ -153,62 +152,62 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Registrant'
+                $ref: "#/components/schemas/Registrant"
       security:
-      - bearer: []
+        - bearer: []
     delete:
       tags:
-      - Registrants
+        - Registrants
       responses:
         200:
           description: Deletion successful
     parameters:
-    - name: registrantID
-      in: path
-      description: The Registrant ID
-      required: true
-      schema:
-        format: int64
-        type: integer
+      - name: registrantID
+        in: path
+        description: The Registrant ID
+        required: true
+        schema:
+          format: int64
+          type: integer
   /auth/session:
     get:
       tags:
-      - Authentication
+        - Authentication
       responses:
         200:
           description: Session exists
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Session'
+                $ref: "#/components/schemas/Session"
         403:
           description: Unauthenticated
       security:
-      - bearer: []
+        - bearer: []
     post:
       tags:
-      - Authentication
+        - Authentication
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LoginRequest'
+              $ref: "#/components/schemas/LoginRequest"
       responses:
         200:
           description: Session created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Session'
+                $ref: "#/components/schemas/Session"
   /auth/registrations:
     post:
       tags:
-      - Authentication
+        - Authentication
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RegistrationRequest'
+              $ref: "#/components/schemas/RegistrationRequest"
         required: true
       responses:
         200:
@@ -218,26 +217,28 @@ paths:
       summary: Verify an email Address
       description: Verify the email Address and set a new password
       parameters:
-      - name: token
-        in: path
-        description: The one-time token
-        required: true
-        schema:
-          type: string
+        - name: token
+          in: path
+          description: The one-time token
+          required: true
+          schema:
+            type: string
       requestBody:
-        description: No body is required, except if the user has no password set.
+        description:
+          No body is required, except if the user has no password set.
           In this case the "Password" payload is required, as indicated by a 400 Error
           when leaving it out.
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Password'
+              $ref: "#/components/schemas/Password"
         required: false
       responses:
         200:
           description: The email was verified
         400:
-          description: The email could have been verified, but the user is expected
+          description:
+            The email could have been verified, but the user is expected
             to also set a password
         404:
           description: The token was not found or is invalid
@@ -249,7 +250,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Password'
+              $ref: "#/components/schemas/Password"
         required: true
       responses:
         200:
@@ -257,19 +258,19 @@ paths:
         404:
           description: The token was not found or is invalid
     parameters:
-    - name: token
-      in: path
-      description: The one-time token
-      required: true
-      schema:
-        type: string
+      - name: token
+        in: path
+        description: The one-time token
+        required: true
+        schema:
+          type: string
 components:
   schemas:
     Application:
       title: Root Type for Application
       description: The root of the Application type's schema.
       required:
-      - permissions
+        - permissions
       type: object
       properties:
         id:
@@ -336,7 +337,7 @@ components:
           type: string
     Password:
       required:
-      - password
+        - password
       properties:
         password:
           format: password
@@ -347,9 +348,9 @@ components:
       description: Bearer Token, can be generated via the Session endpoint.
       scheme: bearer
 tags:
-- name: Applications
-  description: Endpoints related to Applications
-- name: Registrants
-  description: Endpoints related to Registrants
-- name: Authentication
-  description: Endpoints related to User and Session management
+  - name: Applications
+    description: Endpoints related to Applications
+  - name: Registrants
+    description: Endpoints related to Registrants
+  - name: Authentication
+    description: Endpoints related to User and Session management

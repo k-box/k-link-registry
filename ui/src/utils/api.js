@@ -256,7 +256,7 @@ export function getRegistrant(id) {
 export function getEmailVerification(token) {
     return new Promise((resolve, reject) => {
         axios
-            .get(`${store.state.baseURL}/api/2.0/auth/email-verification/${token}`, {
+            .get(`${store.state.baseURL}/api/2.0/auth/email-verifications/${token}`, {
                 headers: {
                     Authorization: `Bearer ${store.state.jwt}`
                 }
@@ -280,7 +280,7 @@ export function getEmailVerification(token) {
 export function performEmailVerification(emailVerification) {
     return new Promise((resolve, reject) => {
         axios
-            .put(`${store.state.baseURL}/api/2.0/auth/email-verification/${emailVerification.token}`, emailVerification, {})
+            .post(`${store.state.baseURL}/api/2.0/auth/email-verifications/${emailVerification.token}`, emailVerification, {})
             .then(response => {
                 switch (response.status) {
                     case 200:
@@ -297,10 +297,14 @@ export function performEmailVerification(emailVerification) {
     });
 }
 
-export function performPasswordReset(passwordReset) {
+
+// resetPassword gets called with a password reset request. The passwordReset
+// Object should contain:
+// * email: The current registrant email
+export function resetPassword(passwordReset) {
     return new Promise((resolve, reject) => {
         axios
-            .put(`${store.state.baseURL}/api/2.0/auth/password-reset/${passwordReset.token}`, passwordReset, {})
+            .post(`${store.state.baseURL}/api/2.0/auth/password-resets`, passwordReset, {})
             .then(response => {
                 switch (response.status) {
                     case 200:

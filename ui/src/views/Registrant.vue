@@ -29,8 +29,8 @@
           <label for="password" class="field-label is-normal">Password</label>
           <div class="field-body">
             <div class="field">
-              <div class="control is-expanded">
-                <input id="password" placeholder="leave empty to keep" v-model="registrant.password" type="password" class="input">
+              <div class="control">
+                <button @click="resetPassword" class="button">Send reset email</button>
               </div>
             </div>
           </div>
@@ -131,6 +131,19 @@ export default {
         })
         .catch(e => {
           this.$showError("Error updating the Registrant");
+        });
+    },
+    resetPassword(event) {
+      event.preventDefault();
+      event.stopPropagation();
+
+      api
+        .resetPassword({ email: this.registrant.email })
+        .then(registrant => {
+          this.$showSuccess("Password reset email sent");
+        })
+        .catch(e => {
+          this.$showError("Error generating a reset mail");
         });
     },
     deleteRegistrant(event) {

@@ -27,11 +27,6 @@ type RegistrantModel struct {
 	LastLogin int64  `json:"last_login"`
 }
 
-// SetPasswordRequest contains a new password to be set
-type SetPasswordRequest struct {
-	Password string `json:"password"`
-}
-
 // handleListRegistrants provides an endpoint that returns a list of all
 // registrants inside the database
 func (s *Server) handleListRegistrants() http.HandlerFunc {
@@ -133,7 +128,8 @@ func (s *Server) handleGetRegistrant() http.HandlerFunc {
 }
 
 // handleUpdateRegistrant provides an endpoint that allows updating of
-// attributes for registrants
+// attributes for registrants. The password can not be updated via this
+// endpoint, instead a password reset must be initiated each time.
 func (s *Server) handleUpdateRegistrant() http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		var response RegistrantModel
@@ -178,11 +174,14 @@ func (s *Server) handleUpdateRegistrant() http.HandlerFunc {
 		registrant.Name = request.Name
 		registrant.Email = request.Email
 
-		// allow change of some attributes, if user is admin or owner
 		if user.Role == RoleOwner || user.Role == RoleAdmin {
+			// allow change of some attributes, if user is admin or owner
 			registrant.Active = request.Active
 			registrant.Email = request.Email
 			registrant.Role = request.Role
+		} else if user.ID == registrant.ID {
+			// allow change of email for themselves, after confirmation
+			s.CreateVerification(registrant, request.Email)
 		}
 
 		if err := s.store.ReplaceRegistrant(registrant); err != nil {

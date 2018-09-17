@@ -64,13 +64,14 @@ type EmailVerification struct {
 	Timestamp    int64  `db:"timestamp"`
 }
 
-// IsExpired returns true if the email verification is expired
+// IsExpired returns true if the email verification is expired (Not working)
 func (v EmailVerification) IsExpired() bool {
-	now := time.Now().UTC().Unix()
+	// For now, don't expire tokens at all.
 
-	if v.Timestamp+60*60*24 > now {
-		return true
-	}
+	//now := time.Now().UTC().Unix()
+	//if v.Timestamp+60*60*24 > now {
+	//	return true
+	//}
 	return false
 }
 

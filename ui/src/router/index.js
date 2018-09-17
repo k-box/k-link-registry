@@ -3,8 +3,7 @@ import Router from "vue-router";
 import Auth from "@/views/Auth";
 import Login from "@/views/Login";
 import Signup from "@/views/Signup";
-import ConfirmEmail from "@/views/ConfirmEmail";
-import ConfirmPassword from "@/views/ConfirmPassword";
+import ConfirmToken from "@/views/ConfirmToken";
 import ResetPassword from "@/views/ResetPassword";
 import Layout from "@/views/Layout";
 import Applications from "@/views/Applications";
@@ -100,14 +99,9 @@ const router = new Router({
           component: ResetPassword,
         },
         {
-          path: "confirm-email/:token",
-          name: "Confirm Email",
-          component: ConfirmEmail
-        },
-        {
-          path: "reset-password/:token",
-          name: "Confirm Password",
-          component: ConfirmPassword
+          path: "confirm/:token",
+          name: "Confirm Token",
+          component: ConfirmToken
         }
       ]
     }

@@ -42,6 +42,12 @@ registrants:
   button_new: New Registrant
   button_edit: Edit
 
+email_verification:
+  title: Verify
+  email_text: Click below to confirm the new email for this user.
+  verify_email_button: verify email
+  set_password_button: set password
+
 permissions:
   name: name
   title: Permissions
