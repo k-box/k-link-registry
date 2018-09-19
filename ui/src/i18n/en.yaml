@@ -45,6 +45,8 @@ registrants:
 email_verification:
   title: Verify
   email_text: Click below to confirm the new email for this user.
+  password_text: Please enter a new password for the user.
+  password: Password
   verify_email_button: verify email
   set_password_button: set password
 

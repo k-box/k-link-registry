@@ -1,10 +1,6 @@
 <template>
   <div>
     <form @submit="submit" class="form-auth">
-      <div v-if="wrong" class="notification is-warning">
-        <strong>{{ $t('login.wrong_credentials') }}</strong>
-      </div>
-
       <h2 class="is-size-3 has-text-centered">{{ $t('login.title') }}</h2>
       <input v-model="email" name="email" type="email" class="input is-medium is-shadowless"
       :placeholder="$t('login.email')" required autofocus>
@@ -30,7 +26,6 @@ export default {
   props: ["dependencies"],
   data: function() {
     return {
-      wrong: false,
       email: "",
       password: ""
     };
@@ -60,7 +55,7 @@ export default {
           this.$router.push({ path: redirect });
         })
         .catch(e => {
-          this.wrong = true;
+          this.$showError($t("login.wrong_credentials"));
           console.log(e);
         });
     }

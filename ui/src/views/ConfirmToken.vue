@@ -65,12 +65,13 @@ export default {
         .then(() => {
           this.$showSuccess("Confirmation successful");
           this.$router.push({ name: "Log in" });
+          location.reload(); // XXX
         })
         .catch(e => {
+          console.log(e);
           this.$showError("Confirmation is expired");
           this.$router.push({ name: "Log in" });
-          console.log(e);
-          this.errors.push(e);
+          // location.reload(); // XXX
         });
     }
   }
