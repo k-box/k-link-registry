@@ -55,7 +55,7 @@ export default {
           this.$router.push({ path: redirect });
         })
         .catch(e => {
-          this.$showError($t("login.wrong_credentials"));
+          this.$showError(this.$t("login.wrong_credentials"));
           console.log(e);
         });
     }

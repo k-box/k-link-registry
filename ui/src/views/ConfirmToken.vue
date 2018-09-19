@@ -1,10 +1,6 @@
 <template>
   <div>
     <form @submit="submit" class="form-auth">
-      <div v-if="wrong" class="notification is-warning">
-        <strong>{{ $t('email_verification.wrong_token') }}</strong>
-      </div>
-
       <h2 class="is-size-3 has-text-centered">{{ $t('email_verification.title') }}</h2>
       <template v-if="email_verification.require_password || true">
         <p>{{ $t('email_verification.password_text') }}</p>
@@ -26,7 +22,7 @@ import auth from "@/utils/auth";
 import { mapState } from "vuex";
 
 export default {
-  name: "confirm token",
+  name: "Confirm token",
   props: ["dependencies"],
   data: function() {
     return {
@@ -58,7 +54,8 @@ export default {
       event.preventDefault();
       event.stopPropagation();
 
-      this.confirmation.token = this.$route.params.token;
+      this.confirmation.token =
+        this.$route.params.token || this.email_verification.token;
 
       api
         .performEmailVerification(this.confirmation)

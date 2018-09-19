@@ -100,7 +100,7 @@ const router = new Router({
         },
         {
           path: "confirm/:token",
-          name: "Confirm Token",
+          name: "Confirm token",
           component: ConfirmToken
         }
       ]
