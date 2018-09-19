@@ -5,7 +5,7 @@ RUN \
     npm install && \
     npm run build
 
-FROM golang:1.10
+FROM golang:1.9
 WORKDIR /go/src/github.com/k-box/k-link-registry
 ADD . .
 COPY --from=0 /app/dist ui/dist
