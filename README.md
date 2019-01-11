@@ -27,21 +27,21 @@ command, i.e. `klinkregistry help`.
 #### Base config
 Used by every command
 
-| flag       | ENV                   | description                                                     |
-|------------|-----------------------|-----------------------------------------------------------------|
-| config     | -                     | config file to use                                              |
-| assets     | `REGISTRY_ASSETS_DIR` | Assets dir (default empty, embedded assets will be used)        |
-| migrations | -                     | The folder that contains the database migrations (default empty, embedded migrations will be used) |
-| db-host    | `REGISTRY_DB_HOST`    | Database host (default: "database")                             |
-| db-port    | `REGISTRY_DB_PORT`    | Database Port (default: "3306")                                 |
-| db-user    | `REGISTRY_DB_USER`    | Database User (default: "kregistry")                            |
-| db-pass    | `REGISTRY_DB_PASS`    | Database Password (default: "kregistry")                        |
-| db-name    | `REGISTRY_DB_NAME`    | Database Name (default: "kregistry")                            |
-| smtp-host  | `REGISTRY_SMTP_HOST`  | Mail Host (default: empty, logger will be used to output mails) |
-| smtp-port  | `REGISTRY_SMTP_PORT`  | Outgoing mail Port (default: 25)                                |
-| smtp-user  | `REGISTRY_SMTP_USER`  | Mail user (default: kregistry)                                  |
-| smtp-pass  | `REGISTRY_SMTP_HOST`  | Mail Password (default: registry)                               |
-| smtp-from  | `REGISTRY_SMTP_HOST`  | From Address (default: registry@example.com)                    |
+| flag       | ENV                       | description                                                     |
+|------------|---------------------------|-----------------------------------------------------------------|
+| config     | -                         | config file to use                                              |
+| assets     | `REGISTRY_ASSETS_DIR`     | Assets dir (default empty, embedded assets will be used)        |
+| migrations | `REGISTRY_MIGRATIONS_DIR` | The folder that contains the database migrations (default empty, embedded migrations will be used) |
+| db-host    | `REGISTRY_DB_HOST`        | Database host (default: "database")                             |
+| db-port    | `REGISTRY_DB_PORT`        | Database Port (default: "3306")                                 |
+| db-user    | `REGISTRY_DB_USER`        | Database User (default: "kregistry")                            |
+| db-pass    | `REGISTRY_DB_PASS`        | Database Password (default: "kregistry")                        |
+| db-name    | `REGISTRY_DB_NAME`        | Database Name (default: "kregistry")                            |
+| smtp-host  | `REGISTRY_SMTP_HOST`      | Mail Host (default: empty, logger will be used to output mails) |
+| smtp-port  | `REGISTRY_SMTP_PORT`      | Outgoing mail Port (default: 25)                                |
+| smtp-user  | `REGISTRY_SMTP_USER`      | Mail user (default: kregistry)                                  |
+| smtp-pass  | `REGISTRY_SMTP_HOST`      | Mail Password (default: registry)                               |
+| smtp-from  | `REGISTRY_SMTP_HOST`      | From Address (default: registry@example.com)                    |
 
 ### `server` config
 Used by the `server` subcommand
