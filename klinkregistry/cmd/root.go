@@ -19,7 +19,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/k-box/k-link-registry"
+	klinkregistry "github.com/k-box/k-link-registry"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -62,6 +62,7 @@ func init() {
 	rootCmd.PersistentFlags().String("smtp-from", "registry@example.com", "Mail sender address")
 
 	rootCmd.PersistentFlags().String("assets", "", "Path to serve assets from. Default: Use embedded assets")
+	rootCmd.PersistentFlags().String("migrations", "", "Path that contains the database migrations to run. Default: Use embedded migrations")
 
 	viper.BindPFlag("db_host", rootCmd.PersistentFlags().Lookup("db-host"))
 	viper.BindPFlag("db_port", rootCmd.PersistentFlags().Lookup("db-port"))
@@ -76,6 +77,7 @@ func init() {
 	viper.BindPFlag("smtp_from", rootCmd.PersistentFlags().Lookup("smtp-from"))
 
 	viper.BindPFlag("assets_dir", rootCmd.PersistentFlags().Lookup("assets"))
+	viper.BindPFlag("migrations_dir", rootCmd.PersistentFlags().Lookup("migrations"))
 }
 
 // initConfig reads in config file and ENV variables if set.

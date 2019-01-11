@@ -8,7 +8,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/k-box/k-link-registry"
+	klinkregistry "github.com/k-box/k-link-registry"
 	"github.com/k-box/k-link-registry/assets"
 	"github.com/k-box/k-link-registry/database/mysql"
 	"github.com/pkg/errors"
@@ -39,7 +39,7 @@ revision number.
 		}
 
 		c := &klinkregistry.Config{
-			AssetDir:         viper.GetString("assets_dir"),
+			MigrationsDir:    viper.GetString("migrations_dir"),
 			DatabaseHost:     viper.GetString("db_host"),
 			DatabasePort:     viper.GetInt("db_port"),
 			DatabaseUser:     viper.GetString("db_user"),
@@ -64,14 +64,18 @@ func (l wrappedLogger) Verbose() bool {
 }
 
 func migrate(config *klinkregistry.Config, command string) error {
-	// if no assets dir is specified, use the internally packaged assets.
-	// otherwise initialize the external assets file.
 	var fs http.FileSystem
-	if config.AssetDir == "" {
+	var migrationPathInFs string
+	// if no migrations dir is specified, use the internally packaged migrations
+	if config.MigrationsDir == "" {
 		fs = assets.Assets
+		migrationPathInFs = "/migrations/mysql"
 	} else {
-		fs = http.Dir(config.AssetDir)
+		fs = http.Dir(config.MigrationsDir)
+		migrationPathInFs = "/mysql"
 	}
+
+	log.Println("Running migration command")
 
 	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?multiStatements=true",
 		config.DatabaseUser, config.DatabasePassword,
@@ -79,11 +83,12 @@ func migrate(config *klinkregistry.Config, command string) error {
 
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {
-		log.Printf("Error creating Database: %s", err.Error())
+		log.Printf("Error opening connection to database: %s", err.Error())
 	}
 
-	migrator, err := mysql.GetMigrator(db, fs, "/migrations/mysql")
+	migrator, err := mysql.GetMigrator(db, fs, migrationPathInFs)
 	if err != nil {
+		log.Printf("Error initializing migrations: %s", err.Error())
 		return errors.Wrap(err, "Error creating migrator instance")
 	}
 
@@ -96,6 +101,7 @@ func migrate(config *klinkregistry.Config, command string) error {
 	case "info":
 		version, dirty, err := migrator.Version()
 		if err != nil {
+			log.Printf("%s", err.Error())
 			return errors.Wrap(err, "Error getting migrator info")
 		}
 		fmt.Printf("\nDatabase revision: %d, Dirty: %t\n", version, dirty)
@@ -107,14 +113,16 @@ func migrate(config *klinkregistry.Config, command string) error {
 	default:
 		revision, err := strconv.ParseUint(command, 10, 32)
 		if err != nil {
-			return errors.Wrap(err, "Could not parse revision")
+			fmt.Println(errors.Wrap(err, "Could not parse revision"))
+			return nil
 		}
 
 		mErr = migrator.Migrate(uint(revision))
 	}
 
 	if mErr != nil {
-		return errors.Wrap(err, "Migration failed")
+		fmt.Println(errors.Wrap(err, "Migration failed"))
+		return nil
 	}
 
 	return nil
