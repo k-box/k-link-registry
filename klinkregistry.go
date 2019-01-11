@@ -23,7 +23,8 @@ type Emailer interface {
 
 // Config contains the configuration for the Application
 type Config struct {
-	AssetDir string // use embedded assets if empty
+	AssetDir      string // use embedded assets if empty
+	MigrationsDir string // use embedded migrations if empty
 
 	NetworkName string // Name of the managed Network
 
