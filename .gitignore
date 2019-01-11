@@ -1,0 +1,4 @@
+.vscode
+dist/
+klinkregistry.exe
+docker-compose.yml

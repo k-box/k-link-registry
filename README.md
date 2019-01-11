@@ -7,7 +7,7 @@ The K-Link-Registry is a Web Application that allows its Users, the
 Precompiled binaries as well as docker images are provided for easy
 installation.
 
-## Migrating from K-Link-registry 1
+### Migrating from K-Link-registry 1
 K-Link registry builds ontop of the API schema for the last iteration of
 the registry. It can be used with a preexisting Database, but this database
 needs to be migrated first. Refer to the documentation of the `migrate`
@@ -27,20 +27,21 @@ command, i.e. `klinkregistry help`.
 #### Base config
 Used by every command
 
-| flag      | ENV                   | description                                                     |
-|-----------|-----------------------|-----------------------------------------------------------------|
-| config    | -                     | config file to use                                              |
-| assets    | `REGISTRY_ASSETS_DIR` | Assets dir (default empty, embedded assets will be used)        |
-| db-host   | `REGISTRY_DB_HOST`    | Database host (default: "database")                             |
-| db-port   | `REGISTRY_DB_PORT`    | Database Port (default: "3306")                                 |
-| db-user   | `REGISTRY_DB_USER`    | Database User (default: "kregistry")                            |
-| db-pass   | `REGISTRY_DB_PASS`    | Database Password (default: "kregistry")                        |
-| db-name   | `REGISTRY_DB_NAME`    | Database Name (default: "kregistry")                            |
-| smtp-host | `REGISTRY_SMTP_HOST`  | Mail Host (default: empty, logger will be used to output mails) |
-| smtp-port | `REGISTRY_SMTP_PORT`  | Outgoing mail Port (default: 25)                                |
-| smtp-user | `REGISTRY_SMTP_USER`  | Mail user (default: kregistry)                                  |
-| smtp-pass | `REGISTRY_SMTP_HOST`  | Mail Password (default: registry)                               |
-| smtp-from | `REGISTRY_SMTP_HOST`  | From Address (default: registry@example.com)                    |
+| flag       | ENV                       | description                                                     |
+|------------|---------------------------|-----------------------------------------------------------------|
+| config     | -                         | config file to use                                              |
+| assets     | `REGISTRY_ASSETS_DIR`     | Assets dir (default empty, embedded assets will be used)        |
+| migrations | `REGISTRY_MIGRATIONS_DIR` | The folder that contains the database migrations (default empty, embedded migrations will be used) |
+| db-host    | `REGISTRY_DB_HOST`        | Database host (default: "database")                             |
+| db-port    | `REGISTRY_DB_PORT`        | Database Port (default: "3306")                                 |
+| db-user    | `REGISTRY_DB_USER`        | Database User (default: "kregistry")                            |
+| db-pass    | `REGISTRY_DB_PASS`        | Database Password (default: "kregistry")                        |
+| db-name    | `REGISTRY_DB_NAME`        | Database Name (default: "kregistry")                            |
+| smtp-host  | `REGISTRY_SMTP_HOST`      | Mail Host (default: empty, logger will be used to output mails) |
+| smtp-port  | `REGISTRY_SMTP_PORT`      | Outgoing mail Port (default: 25)                                |
+| smtp-user  | `REGISTRY_SMTP_USER`      | Mail user (default: kregistry)                                  |
+| smtp-pass  | `REGISTRY_SMTP_HOST`      | Mail Password (default: registry)                               |
+| smtp-from  | `REGISTRY_SMTP_HOST`      | From Address (default: registry@example.com)                    |
 
 ### `server` config
 Used by the `server` subcommand
@@ -65,6 +66,40 @@ Supported arguments:
 * `up` migrates to the latest database revision, this is probably what you have in mind
 * `down` cleans the database
 * `1` migrates to the specific revision number, '1' in this case
+
+
+## Development
+
+The K-Link Registry is written in [GoLang](https://golang.org/) with a
+[VueJS](https://vuejs.org/) frontend. We currently target Go 1.10.
+
+> Before start make sure to have your Go workspace configured
+
+
+- Clone the repository in your Go path under `github.com/k-box/k-link-registry`
+- Enter the cloned repository
+- Pull in the dependencies via `go get -tags="dev" -v github.com/k-box/k-link-registry/klinkregistry`
+- Run `go get github.com/shurcooL/vfsgen/cmd/vfsgendev`
+- Build the fronted
+ - Move to the `ui` directory
+ - Execute `yarn` (or `npm install`)
+ - Execute `yarn build` (or `npm run build`)
+- Generate the Assets and Migrations virtual filesystem `go generate github.com/k-box/k-link-registry/assets`
+
+
+**Build for development**
+
+```bash
+go build --tags="dev" github.com/k-box/k-link-registry/klinkregistry
+```
+
+> This will use the files that are in the respective folder and not the included assets in the executable
+
+**Build for production**
+
+```bash
+go build --tags="netgo" github.com/k-box/k-link-registry/klinkregistry
+```
 
 ## Known Bugs
 Users cannot change their name once registred, except if they are owner
