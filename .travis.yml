@@ -53,3 +53,4 @@ deploy:
   on:
     repo: k-box/k-link-registry
     tags: true
+    go: "1.10.x"
