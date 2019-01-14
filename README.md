@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/k-box/k-link-registry.svg?branch=master)](https://travis-ci.org/k-box/k-link-registry) - [![Build Status](https://travis-ci.org/k-box/k-link-registry.svg?branch=develop)](https://travis-ci.org/k-box/k-link-registry)
+
 # K-Link-Registry
 
 The K-Link-Registry is a Web Application that allows its Users, the

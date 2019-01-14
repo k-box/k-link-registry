@@ -1,0 +1,43 @@
+language: go
+
+go:
+  - "1.10.x"
+  - "1.11.x"
+
+services:
+  - docker
+
+sudo: false
+
+notifications:
+  email:
+    on_success: never
+
+branches:
+  only:
+  - master
+  - develop
+  - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+
+install:
+  - go get -tags="dev" -v github.com/k-box/k-link-registry/klinkregistry
+
+before_script:
+  - cd ui
+  - yarn
+  - yarn build
+
+script: 
+  - go fmt $(go list ./... | grep -v /vendor/)
+  - go vet -tags="dev" $(go list ./... | grep -v /vendor/)
+  - go test -tags="dev" -race $(go list ./... | grep -v /vendor/) -v -coverprofile .testCoverage.txt
+  # generate assets
+  - go get github.com/shurcooL/vfsgen/cmd/vfsgendev
+  - go generate github.com/k-box/k-link-registry/assets
+  # dependencies for special platforms (windows)
+  - go get github.com/inconshreveable/mousetrap
+  # build binaries -- list of supported plattforms is here:
+  # https://stackoverflow.com/a/20728862
+  - GOOS=linux   GOARCH=amd64         go build -tags "netgo" -o ./dist/klinkregistry.bin github.com/k-box/k-link-registry/klinkregistry
+  # - GOOS=linux   GOARCH=arm   GOARM=6 go build -tags "netgo" -o ./dist/klinkregistry.arm github.com/k-box/k-link-registry/klinkregistry
+  # - GOOS=windows GOARCH=amd64         go build -tags "netgo" -o ./dist/klinkregistry.exe github.com/k-box/k-link-registry/klinkregistry
