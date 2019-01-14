@@ -17,6 +17,7 @@ branches:
   only:
   - master
   - develop
+  - test-tag
   - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
 
 install:
@@ -37,5 +38,21 @@ script:
   # build binaries -- list of supported plattforms is here:
   # https://stackoverflow.com/a/20728862
   - GOOS=linux   GOARCH=amd64         go build -tags "netgo" -o ./dist/klinkregistry.bin github.com/k-box/k-link-registry/klinkregistry
-  # - GOOS=linux   GOARCH=arm   GOARM=6 go build -tags "netgo" -o ./dist/klinkregistry.arm github.com/k-box/k-link-registry/klinkregistry
-  # - GOOS=windows GOARCH=amd64         go build -tags "netgo" -o ./dist/klinkregistry.exe github.com/k-box/k-link-registry/klinkregistry
+
+before_deploy: 
+  - ls -la assets
+  - ls -la ui/dist
+  - GOOS=linux   GOARCH=amd64         go build -tags "netgo" -o ./dist/klinkregistry-linux-x64.bin github.com/k-box/k-link-registry/klinkregistry
+  - GOOS=windows GOARCH=amd64         go build -tags "netgo" -o ./dist/klinkregistry-win-x64.exe github.com/k-box/k-link-registry/klinkregistry
+
+deploy:
+  provider: releases
+  api_key:
+    secure: MFLa3zt6esC4P3LruRwdpoP47Cjbpw+4T95iAxGAOQmT3VEh0qgVQCt1GE6naP6EUaBR8Vb5XTjcDvGqVr+fHw3C44bxzGWmzdTyZbfpk+TYLoiBziLB2y1dtNAFvTcYw48ty+xvwdamRILSxEMeeOKRr0jajTlk/RdNAa/7dMDT5IsOOrYa2QSxM0LV8CE8gEF5a0Fxo+5L9LgLwh5WK+xd2SBbZzITNO8E6m5ls4jKuAQkzHNF5MB17DfIcPZCLw3xPWCx+NzWvbXK78ODFDYeyjFGkLvOGSJUYLAEB1InHfEodLMEOv9KfYj+i0Mt+43Pde8VCLNzPdDxWwMLYsO4+xfsaCAxDwUa6MndMFvQYhaq7jlEHTXRVk0OOIi23Y3uGcoURnsIIfKVeij4tgJzGbnm0KfO/fbVR3CrebRsFrACZN/0zxQumWnM5q8EPlgmrVC3AS0U6VvlK4zubrlk5mAt9K2pStB2mymy3JYwd9u28c3+5ER4Mby/c4kEw7rrpciUAlhK6pOQJW+qiAnHXqD50a2CfSenRc0FYOgiI9Lb15eUw1w3ssz9lXF4a7Rc3JGoGP7QPQ4em5JcykLkSdDbvxxFtX0QZDuHQd5h8nh84QVEpIu7siPHCLTBD7pGph0viM4hz9KoHx5x1gQIpMSIUHuN0JQnpjXKxak=
+  file: 
+    - "dist/klinkregistry-linux-x64.bin"
+    - "dist/klinkregistry-win-x64.exe"
+  skip_cleanup: true
+  on:
+    repo: k-box/k-link-registry
+    tags: true

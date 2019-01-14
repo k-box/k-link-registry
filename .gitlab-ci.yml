@@ -70,7 +70,6 @@ compile:
     # build binaries -- list of supported plattforms is here:
     # https://stackoverflow.com/a/20728862
     - GOOS=linux   GOARCH=amd64         go build -tags "netgo" -o $CI_PROJECT_DIR/klinkregistry.bin github.com/k-box/k-link-registry/klinkregistry
-    - GOOS=linux   GOARCH=arm   GOARM=6 go build -tags "netgo" -o $CI_PROJECT_DIR/klinkregistry.arm github.com/k-box/k-link-registry/klinkregistry
     - GOOS=windows GOARCH=amd64         go build -tags "netgo" -o $CI_PROJECT_DIR/klinkregistry.exe github.com/k-box/k-link-registry/klinkregistry
   artifacts:
     expire_in: "8 hrs"
