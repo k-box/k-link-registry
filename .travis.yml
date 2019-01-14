@@ -30,14 +30,15 @@ before_script:
   - cd ..
 
 script:
-  - go vet -tags="dev" -v github.com/k-box/k-link-registry/klinkregistry
+  # - go vet -tags="dev" -v github.com/k-box/k-link-registry/klinkregistry
+  - go vet -tags="dev" $(go list ./... | grep -v /vendor/)
+  - go test -tags="dev" -race $(go list ./... | grep -v /vendor/) -v -coverprofile .testCoverage.txt
   - go get github.com/shurcooL/vfsgen/cmd/vfsgendev
   - go generate github.com/k-box/k-link-registry/assets
   - go get github.com/inconshreveable/mousetrap
   - GOOS=linux   GOARCH=amd64         go build -tags "netgo" -o ./dist/klinkregistry.bin github.com/k-box/k-link-registry/klinkregistry
 
 before_deploy:
-  - ls -la .
   - GOOS=linux   GOARCH=amd64         go build -tags "netgo" -o ./dist/klinkregistry-linux-x64.bin github.com/k-box/k-link-registry/klinkregistry
   - GOOS=windows GOARCH=amd64         go build -tags "netgo" -o ./dist/klinkregistry-win-x64.exe github.com/k-box/k-link-registry/klinkregistry
 
