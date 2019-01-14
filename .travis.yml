@@ -53,6 +53,7 @@ deploy:
     - "dist/klinkregistry-linux-x64.bin"
     - "dist/klinkregistry-win-x64.exe"
   skip_cleanup: true
+  draft: true
   on:
     repo: k-box/k-link-registry
     tags: true
