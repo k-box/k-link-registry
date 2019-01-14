@@ -40,8 +40,13 @@ script:
   - GOOS=linux   GOARCH=amd64         go build -tags "netgo" -o ./dist/klinkregistry.bin github.com/k-box/k-link-registry/klinkregistry
 
 before_deploy: 
-  - ls -la assets
+  - ls -la .
   - ls -la ui/dist
+  - yarn
+  - yarn build
+  - go get github.com/shurcooL/vfsgen/cmd/vfsgendev
+  - go generate github.com/k-box/k-link-registry/assets
+  - go get github.com/inconshreveable/mousetrap
   - GOOS=linux   GOARCH=amd64         go build -tags "netgo" -o ./dist/klinkregistry-linux-x64.bin github.com/k-box/k-link-registry/klinkregistry
   - GOOS=windows GOARCH=amd64         go build -tags "netgo" -o ./dist/klinkregistry-win-x64.exe github.com/k-box/k-link-registry/klinkregistry
 
