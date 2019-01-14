@@ -28,9 +28,7 @@ before_script:
   - yarn build
 
 script: 
-  - go fmt $(go list ./... | grep -v /vendor/)
-  - go vet -tags="dev" $(go list ./... | grep -v /vendor/)
-  - go test -tags="dev" -race $(go list ./... | grep -v /vendor/) -v -coverprofile .testCoverage.txt
+  - go test -tags="dev" -v ./...
   # generate assets
   - go get github.com/shurcooL/vfsgen/cmd/vfsgendev
   - go generate github.com/k-box/k-link-registry/assets
