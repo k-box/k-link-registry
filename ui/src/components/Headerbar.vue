@@ -21,7 +21,7 @@
 
 <script>
 import auth from "@/utils/auth";
-import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 export default {
   methods: {

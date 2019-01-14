@@ -3,13 +3,13 @@
 </template>
 
 <script>
-import fontawesome from "@fortawesome/fontawesome";
-import faUser from "@fortawesome/fontawesome-free-solid/faUser";
-import faCode from "@fortawesome/fontawesome-free-solid/faCode";
-import faList from "@fortawesome/fontawesome-free-solid/faList";
-import faSignOutAlt from "@fortawesome/fontawesome-free-solid/faSignOutAlt";
+import {library, dom} from "@fortawesome/fontawesome-svg-core";
+import faUser from "@fortawesome/free-solid-svg-icons/faUser";
+import faCode from "@fortawesome/free-solid-svg-icons/faCode";
+import faList from "@fortawesome/free-solid-svg-icons/faList";
+import faSignOutAlt from "@fortawesome/free-solid-svg-icons/faSignOutAlt";
 
-fontawesome.library.add(faUser, faCode, faList, faSignOutAlt);
+library.add(faUser, faCode, faList, faSignOutAlt);
 
 export default {
   name: "app",
