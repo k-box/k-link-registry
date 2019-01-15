@@ -4,8 +4,7 @@
     <div class="fullsize">
         <div class="auth-container">
             <div class="branding">
-                <img src="@/assets/img/klink-logo-web.svg" alt="Klink logo">
-                <div class="platform">{{ $store.state.networkName }}</div>
+                <h2 class="title is-5 has-text-white">{{ $store.state.networkName }}</h2>
             </div>
             <router-view></router-view>
         </div>
@@ -20,12 +19,7 @@
   bottom: 0;
   min-width: 100%;
   min-height: 100%;
-  background: linear-gradient(rgba(0, 144, 255, 0.85), rgba(0, 144, 255, 0.85)),
-    url(//test.klink.asia/images/land.jpg);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
+  background: rgb(0, 144, 255);
 }
 
 .auth-container {
@@ -45,11 +39,6 @@
     transform: translate(0%, -50%);
     text-align: center;
     color: #fff;
-  }
-  img {
-    float: left;
-    margin-bottom: 10px;
-    margin-right: 10px;
   }
 }
 
