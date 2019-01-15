@@ -31,7 +31,7 @@ Vue.prototype.$showError = function (error) {
     timeout: null,
     buttons: [
       Noty.button(i18n.t('buttons.reportIssue'), '', function () {
-        window.open('https://git.klink.asia/main/k-link-registry/issues/new');
+        window.open('https://github.com/k-box/k-link-registry/issues');
       }),
       Noty.button(i18n.t('buttons.close'), '', function () {
         n.close();
@@ -48,10 +48,10 @@ console.log(
   "%cThank you for using the K-Link-Registry! %c😊",
   // Nice big comic-sans-like font, because comic-sans
   // is never wrong.
-  "font: 3em cursive; color: #dd4814;",
+  "font: 2em cursive; color: #dd4814;",
   // we use serif for the emoji, since it is more
   // likely to contain the graphical variant.
-  "font: 4em serif;"
+  "font: 3em serif;"
 );
 
 new Vue({

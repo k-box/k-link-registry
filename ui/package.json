@@ -7,7 +7,9 @@
     "url": "https://github.com/k-box/k-link-registry-frontend"
   },
   "scripts": {
-    "build": "node ./build/build.js",
+    "development": "cross-env NODE_ENV=development node ./build/build.js",
+    "production": "cross-env NODE_ENV=production node ./build/build.js",
+    "build": "npm run development",
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
@@ -32,6 +34,7 @@
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-stage-2": "^6.24.1",
+    "cross-env": "^5.2.0",
     "css-loader": "^0.28.11",
     "eslint": "^4.19.1",
     "eslint-config-prettier": "^2.9.0",

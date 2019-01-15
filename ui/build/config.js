@@ -13,7 +13,7 @@ module.exports = {
     env: {
       NODE_ENV: '"production"'
     },
-    productionSourceMap: true,
+    productionSourceMap: false,
     // Run the build command with an extra argument to
     // View the bundle analyzer report after build finishes:
     // `npm run build --report`
