@@ -44,7 +44,7 @@ frontend:
   script:
     - cd $CI_PROJECT_DIR/ui
     - npm install
-    - npm run build
+    - npm run production
   artifacts:
     expire_in: "8 hrs"
     paths:

@@ -25,7 +25,7 @@ install:
 before_script:
   - cd ui
   - yarn
-  - yarn build
+  - yarn production
   - cd ..
 
 script:
