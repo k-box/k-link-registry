@@ -6,7 +6,7 @@ module.exports = {
   // location of all compiled files
   assetsRoot: path.resolve(__dirname, "../dist"),
   // subdirectory where we will move all static files
-  assetsSubDirectory: "static",
+  assetsSubDirectory: "./",
 
   // build settings for production
   build: {
