@@ -94,8 +94,6 @@
 import * as api from "@/utils/api";
 import store from "@/store";
 
-console.log(store.state);
-
 const baseApplication = {
   id: 0,
   owner_id: 0,
@@ -199,7 +197,6 @@ export default {
         .getRegistrants()
         .then(registrants => {
           this.registrants = registrants;
-          console.log(registrants);
         })
         .catch(e => {
           this.$showError("Error fetching Registrants");
