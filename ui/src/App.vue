@@ -3,11 +3,12 @@
 </template>
 
 <script>
-import {library, dom} from "@fortawesome/fontawesome-svg-core";
-import faUser from "@fortawesome/free-solid-svg-icons/faUser";
-import faCode from "@fortawesome/free-solid-svg-icons/faCode";
-import faList from "@fortawesome/free-solid-svg-icons/faList";
-import faSignOutAlt from "@fortawesome/free-solid-svg-icons/faSignOutAlt";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
+import { faCode } from "@fortawesome/free-solid-svg-icons/faCode";
+import { faList } from "@fortawesome/free-solid-svg-icons/faList";
+import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons/faSignOutAlt";
 
 library.add(faUser, faCode, faList, faSignOutAlt);
 

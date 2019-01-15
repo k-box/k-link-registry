@@ -4,6 +4,7 @@ import store from "./store";
 import App from "./App";
 import i18n from "./i18n";
 import Noty from 'noty';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 const defaultNoty = {
   layout: "topRight",
@@ -40,6 +41,8 @@ Vue.prototype.$showError = function (error) {
 
   n.show();
 };
+
+Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 console.log(
   "%cThank you for using the K-Link-Registry! %c😊",
