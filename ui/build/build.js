@@ -22,6 +22,8 @@ rm(path.join(config.assetsRoot, config.assetsSubDirectory), err => {
       }) + "\n\n\n"
     );
 
-    console.log("BUILD COMPLETE");
+    if(webpackConfig.watch){
+      console.info("Watching for source file changes...");
+    }
   });
 });

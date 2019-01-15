@@ -10,6 +10,7 @@
     "development": "cross-env NODE_ENV=development node ./build/build.js",
     "production": "cross-env NODE_ENV=production node ./build/build.js",
     "build": "npm run development",
+    "watch": "cross-env NODE_ENV=development WATCH=true node ./build/build.js",
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
@@ -55,7 +56,6 @@
     "postcss-loader": "^2.1.4",
     "rimraf": "^2.6.2",
     "sass-loader": "^7.0.1",
-    "uglify-js": "^3.3.22",
     "url-loader": "^1.0.1",
     "vue-loader": "^14.2.2",
     "vue-style-loader": "^4.1.0",
