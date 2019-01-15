@@ -80,17 +80,16 @@ The K-Link Registry is written in [GoLang](https://golang.org/) with a
 
 > Before start make sure to have your Go workspace configured
 
-
 - Clone the repository in your Go path under `github.com/k-box/k-link-registry`
 - Enter the cloned repository
 - Pull in the dependencies via `go get -tags="dev" -v github.com/k-box/k-link-registry/klinkregistry`
 - Run `go get github.com/shurcooL/vfsgen/cmd/vfsgendev`
-- Build the fronted
+- Build the [frontend](./ui/README.md)
  - Move to the `ui` directory
  - Execute `yarn` (or `npm install`)
  - Execute `yarn development` (or `npm run development`)
 
-Now you are ready to build a development version
+Now you are ready to build a development version.
 
 **Build for development**
 
@@ -118,6 +117,10 @@ go generate github.com/k-box/k-link-registry/assets
 # Generate the production binary
 go build --tags="netgo" github.com/k-box/k-link-registry/klinkregistry
 ```
+
+### Frontend 
+
+For the development documentation of the frontend please refer to the [`./ui` folder](./ui/)
 
 ## Known Bugs
 Users cannot change their name once registred, except if they are owner
