@@ -1,5 +1,5 @@
 // set production env, to trigger some further optimizations
-process.env.NODE_ENV = "production";
+// process.env.NODE_ENV = "production";
 
 var path = require("path");
 // rimraf deals with removing files
