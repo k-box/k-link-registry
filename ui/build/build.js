@@ -1,5 +1,5 @@
 // set production env, to trigger some further optimizations
-process.env.NODE_ENV = "production";
+// process.env.NODE_ENV = "production";
 
 var path = require("path");
 // rimraf deals with removing files
@@ -22,6 +22,8 @@ rm(path.join(config.assetsRoot, config.assetsSubDirectory), err => {
       }) + "\n\n\n"
     );
 
-    console.log("BUILD COMPLETE");
+    if(webpackConfig.watch){
+      console.info("Watching for source file changes...");
+    }
   });
 });

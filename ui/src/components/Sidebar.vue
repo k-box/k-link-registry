@@ -9,7 +9,7 @@
       <div v-if="$store.state.user.role == 'ROLE_ADMIN' || $store.state.user.role == 'ROLE_OWNER'">
         <router-link class="nav-link" :to="{ name: 'Registrants'}" :title="$t('sidebar.registrants')">
           <font-awesome-icon icon="user" />
-          <span>{{ $t('sidebar.registrants') }}<span>
+          <span>{{ $t('sidebar.registrants') }}</span>
         </router-link>
         <router-link class="nav-link" :to="{ name: 'Permissions'}" :title="$t('sidebar.permissions')">
           <font-awesome-icon icon="list" />
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 export default {
   components: {

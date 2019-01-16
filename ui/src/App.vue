@@ -3,13 +3,14 @@
 </template>
 
 <script>
-import fontawesome from "@fortawesome/fontawesome";
-import faUser from "@fortawesome/fontawesome-free-solid/faUser";
-import faCode from "@fortawesome/fontawesome-free-solid/faCode";
-import faList from "@fortawesome/fontawesome-free-solid/faList";
-import faSignOutAlt from "@fortawesome/fontawesome-free-solid/faSignOutAlt";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
+import { faCode } from "@fortawesome/free-solid-svg-icons/faCode";
+import { faList } from "@fortawesome/free-solid-svg-icons/faList";
+import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons/faSignOutAlt";
 
-fontawesome.library.add(faUser, faCode, faList, faSignOutAlt);
+library.add(faUser, faCode, faList, faSignOutAlt);
 
 export default {
   name: "app",
@@ -32,16 +33,15 @@ export default {
       // remove after fade out
       setTimeout(function() {
         loading.parentNode.removeChild(loading);
-      }, 200);
+      }, 10);
     }
   }
 };
 </script>
 
 <style lang="scss">
-@import url("https://fonts.googleapis.com/css?family=Montserrat:400,700&amp;subset=cyrillic-ext,latin-ext");
 
-$family-sans-serif: "Montserrat", sans-serif;
+$family-sans-serif: system-ui,BlinkMacSystemFont,-apple-system,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
 
 @import "../node_modules/bulma/bulma.sass";
 @import "../node_modules/noty/lib/noty.css";
@@ -49,6 +49,5 @@ $family-sans-serif: "Montserrat", sans-serif;
 
 html {
   background-color: #fafafa;
-  color: #333;
 }
 </style>

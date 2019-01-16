@@ -8,7 +8,10 @@ function resolve(dir) {
   return path.join(__dirname, "..", dir);
 }
 
+var isWatchRequested = process.env.WATCH ? true : false;
+
 module.exports = {
+  watch: isWatchRequested,
   // entrypoint for our app
   entry: {
     app: "./src/main.js"

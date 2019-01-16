@@ -3,7 +3,7 @@ WORKDIR /app
 ADD ui .
 RUN \
     npm install && \
-    npm run build
+    npm run production
 
 FROM golang:1.10
 WORKDIR /go/src/github.com/k-box/k-link-registry

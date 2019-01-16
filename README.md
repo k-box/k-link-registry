@@ -75,33 +75,52 @@ Supported arguments:
 The K-Link Registry is written in [GoLang](https://golang.org/) with a
 [VueJS](https://vuejs.org/) frontend. We currently target Go 1.10.
 
-> Before start make sure to have your Go workspace configured
 
+### Build the binary
+
+> Before start make sure to have your Go workspace configured
 
 - Clone the repository in your Go path under `github.com/k-box/k-link-registry`
 - Enter the cloned repository
 - Pull in the dependencies via `go get -tags="dev" -v github.com/k-box/k-link-registry/klinkregistry`
 - Run `go get github.com/shurcooL/vfsgen/cmd/vfsgendev`
-- Build the fronted
+- Build the [frontend](./ui/README.md)
  - Move to the `ui` directory
  - Execute `yarn` (or `npm install`)
- - Execute `yarn build` (or `npm run build`)
-- Generate the Assets and Migrations virtual filesystem `go generate github.com/k-box/k-link-registry/assets`
+ - Execute `yarn development` (or `npm run development`)
 
+Now you are ready to build a development version.
 
 **Build for development**
+
+Building a development version will generate a binary that access the migrations and the frontend
+layer directly from the respective location on disk.
 
 ```bash
 go build --tags="dev" github.com/k-box/k-link-registry/klinkregistry
 ```
 
-> This will use the files that are in the respective folder and not the included assets in the executable
+> This will use the files that are in the respective folder and not the included assets in the executable.
+> Migrations will come from `assets/migrations/mysql` and frontend will come from `ui/dist`
 
 **Build for production**
 
 ```bash
+# Build the frontend assets for production
+cd ui
+yarn production # or npm run production
+cd ..
+
+# Enable the assets to be included in the final binary
+go generate github.com/k-box/k-link-registry/assets
+
+# Generate the production binary
 go build --tags="netgo" github.com/k-box/k-link-registry/klinkregistry
 ```
+
+### Frontend 
+
+For the development documentation of the frontend please refer to the [`./ui` folder](./ui/)
 
 ## Known Bugs
 Users cannot change their name once registred, except if they are owner

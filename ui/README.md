@@ -1,26 +1,39 @@
 # K-Link-Registry Frontend
 
-This project provides a Frontend for the K-Link Registry API.
+> The User Interface for interacting with the K-Link Registry.
 
-## Install
+This part of the project constitutes the user interface that will be embedded in the K-Link Registry
+to enable user interaction.
 
+The so called frontend is a [VueJS](https://vuejs.org/) application styled with the help of [Bulma](https://bulma.io/).
+
+## Build
+
+To build the distributable version of the assets please execute
+
+```bash
+## Install dependencies
+yarn
+# or npm install
+
+
+## Build
+yarn production
+# or npm run production
 ```
-npm install k-link-registry-frontend
+
+> This operation currently takes a while (~ 30 seconds) and might seem
+> broken since no progress is being reported
+
+## Development
+
+During the development you might find yourself in executing the build steps
+quite often. For this purpose the `watch` script is available.
+
+```bash
+yarn watch
+# or npm run watch
 ```
 
-## Usage
-
-This package is not meant to be used directly.
-
-## Contribute
-
-Contributions and feature requests are welcome!
-
-## Known Bugs
-
-* @import in postcss blocks does only include regular css (works for sass blocks)
-* No development build settings are configured yet
-
-## License
-
-[MIT](./LICENSE) OneOffTech
+The build system will watch source files (under `/src`) for changes and
+will automatically trigger the necessary build steps.

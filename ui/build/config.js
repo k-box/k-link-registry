@@ -6,14 +6,14 @@ module.exports = {
   // location of all compiled files
   assetsRoot: path.resolve(__dirname, "../dist"),
   // subdirectory where we will move all static files
-  assetsSubDirectory: "static",
+  assetsSubDirectory: "./",
 
   // build settings for production
   build: {
     env: {
       NODE_ENV: '"production"'
     },
-    productionSourceMap: true,
+    productionSourceMap: false,
     // Run the build command with an extra argument to
     // View the bundle analyzer report after build finishes:
     // `npm run build --report`

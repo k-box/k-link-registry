@@ -7,10 +7,9 @@ var webpack = require("webpack");
 var HtmlWebpackPlugin = require("html-webpack-plugin");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var OptimizeCSSPlugin = require("optimize-css-assets-webpack-plugin");
-var UglifyJS = require("uglify-js");
 var path = require("path");
 
-var env = config.build.env;
+var env = process.env.NODE_ENV;
 
 // webpackConfig is the production webpack config,
 // which is based on the base webpack config
@@ -34,14 +33,14 @@ var webpackConfig = merge(baseWebpackConfig, {
     // enable further optimizations
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
-      "process.env": env
+      "process.env": JSON.stringify(env)
     }),
     // minimize scripts
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false
       },
-      sourceMap: true
+      sourceMap: env === "development"
     }),
     // extract styles into their own file
     new ExtractTextPlugin({
