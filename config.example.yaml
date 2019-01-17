@@ -1,0 +1,5 @@
+db_host: "localhost"
+db_port: 3306
+http: "localhost:8080"
+admin_username: "admin@domain.local"
+admin_password: "***"

@@ -103,6 +103,25 @@ go build --tags="dev" github.com/k-box/k-link-registry/klinkregistry
 > This will use the files that are in the respective folder and not the included assets in the executable.
 > Migrations will come from `assets/migrations/mysql` and frontend will come from `ui/dist`
 
+**Watch for changes**
+
+During development you might want to continuously re-build the binary and run it to try the changes.
+To this aim we selected [Modd](https://github.com/cortesi/modd), which is
+_a tool that triggers commands and manages daemons in response to filesystem changes_.
+
+```bash
+# Get Modd
+go get -v github.com/cortesi/modd/cmd/modd
+
+# Inser the configuration to be used by the K-Link Registry when started
+mkdir ./dist
+cp config.example.yaml ./dist/config.yaml
+
+# Run Modd to watch for go files changes
+modd --file="./modd.conf"
+```
+
+
 **Build for production**
 
 ```bash
