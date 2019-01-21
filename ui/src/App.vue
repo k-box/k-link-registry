@@ -8,9 +8,10 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faCode } from "@fortawesome/free-solid-svg-icons/faCode";
 import { faList } from "@fortawesome/free-solid-svg-icons/faList";
+import { faLink } from "@fortawesome/free-solid-svg-icons/faLink";
 import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons/faSignOutAlt";
 
-library.add(faUser, faCode, faList, faSignOutAlt);
+library.add(faUser, faCode, faList, faSignOutAlt, faLink);
 
 export default {
   name: "app",

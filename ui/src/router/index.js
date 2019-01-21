@@ -9,6 +9,8 @@ import ResetPassword from "@/views/ResetPassword";
 import Layout from "@/views/Layout";
 import Applications from "@/views/Applications";
 import Application from "@/views/Application";
+import Klinks from "@/views/Klinks";
+import Klink from "@/views/Klink";
 import Registrants from "@/views/Registrants";
 import Registrant from "@/views/Registrant";
 import Permissions from "@/views/Permissions";
@@ -57,6 +59,16 @@ const router = new Router({
           path: "applications/:id",
           name: "Application",
           component: Application
+        },
+        {
+          path: "klinks",
+          name: "Klinks",
+          component: Klinks,
+        },
+        {
+          path: "klinks/:id",
+          name: "Klink",
+          component: Klink
         },
         {
           path: "registrants",

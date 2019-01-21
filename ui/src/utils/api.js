@@ -204,6 +204,127 @@ export function deleteApplication(id) {
     });
 }
 
+// K-Links
+export function getKlinks() {
+    return new Promise((resolve, reject) => {
+        axios
+            .get(`${store.state.baseURL}/api/2.0/klinks`, {
+                headers: {
+                    Authorization: `Bearer ${store.state.jwt}`
+                }
+            })
+            .then(response => {
+                switch (response.status) {
+                    case 200:
+                        resolve(response.data);
+                        break;
+                    default:
+                        reject(response.data.error);
+                        break;
+                }
+            })
+            .catch(e => {
+                reject(e);
+            });
+    });
+}
+
+export function getKlink(id) {
+    return new Promise((resolve, reject) => {
+        axios
+            .get(`${store.state.baseURL}/api/2.0/klinks/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${store.state.jwt}`
+                }
+            })
+            .then(response => {
+                switch (response.status) {
+                    case 200:
+                        resolve(response.data);
+                        break;
+                    default:
+                        reject(response.data.error);
+                        break;
+                }
+            })
+            .catch(e => {
+                reject(e);
+            });
+    });
+}
+
+export function newKlink(klink) {
+    return new Promise((resolve, reject) => {
+        axios
+            .post(`${store.state.baseURL}/api/2.0/klinks`, klink, {
+                headers: {
+                    Authorization: `Bearer ${store.state.jwt}`
+                }
+            })
+            .then(response => {
+                switch (response.status) {
+                    case 200:
+                        resolve(response.data);
+                        break;
+                    default:
+                        reject(response.data.error);
+                        break;
+                }
+            })
+            .catch(e => {
+                reject(e);
+            });
+    });
+}
+
+export function updateKlink(klink) {
+    return new Promise((resolve, reject) => {
+        axios
+            .put(`${store.state.baseURL}/api/2.0/klinks/${klink.id}`, klink, {
+                headers: {
+                    Authorization: `Bearer ${store.state.jwt}`
+                }
+            })
+            .then(response => {
+                switch (response.status) {
+                    case 200:
+                        resolve(response.data);
+                        break;
+                    default:
+                        reject(response.data.error);
+                        break;
+                }
+            })
+            .catch(e => {
+                reject(e);
+            });
+    });
+}
+
+export function deleteKlink(id) {
+    return new Promise((resolve, reject) => {
+        axios
+            .delete(`${store.state.baseURL}/api/2.0/klinks/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${store.state.jwt}`
+                }
+            })
+            .then(response => {
+                switch (response.status) {
+                    case 200:
+                        resolve();
+                        break;
+                    default:
+                        reject(response.data.error);
+                        break;
+                }
+            })
+            .catch(e => {
+                reject(e);
+            });
+    });
+}
+
 // REGISTRANTS
 export function getRegistrants() {
     return new Promise((resolve, reject) => {

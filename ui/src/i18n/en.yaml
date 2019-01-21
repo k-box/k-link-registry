@@ -28,10 +28,16 @@ sidebar:
   registrants: Registrants
   applications: Applications
   permissions: Permissions
+  klinks: K-Links
 
 applications:
   title: Applications
   button_new: New Application
+  button_edit: Edit
+
+klinks:
+  title: K-Links
+  button_new: New K-Link
   button_edit: Edit
 
 registrants:
