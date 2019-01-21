@@ -17,6 +17,7 @@ type ApplicationModel struct {
 	URL         string   `json:"app_domain"`
 	Token       string   `json:"token"`
 	Permissions []string `json:"permissions"`
+	Klinks      []string `json:"klinks"`
 	Active      bool     `json:"active"`
 }
 

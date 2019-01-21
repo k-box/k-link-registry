@@ -50,7 +50,19 @@ type Application struct {
 	URL         string   `db:"app_domain"`
 	Token       string   `db:"auth_token"`
 	Permissions []string `db:"permissions"`
+	Klinks      []string `db:"klinks"`
 	Active      bool     `db:"status"`
+}
+
+// Klink contains information about a registered K-Link instance
+type Klink struct {
+	ID          int64  `db:"klink_id"`
+	Identifier  string `db:"identifier"`
+	ManagerID   int64  `db:"manager_id"`
+	Name        string `db:"name"`
+	Website     string `db:"website"`
+	Description string `db:"description"`
+	Active      bool   `db:"active"`
 }
 
 // EmailVerification represents a emailVerification in the database On

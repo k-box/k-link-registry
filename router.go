@@ -61,6 +61,17 @@ func (s *Server) initRoutes() {
 			r.Delete("/{id}", s.handleDeleteApplication())
 		})
 
+		// K-Links endpoints
+		r.Route("/klinks", func(r chi.Router) {
+			r.Use(s.sessions.RequireAuthorized)
+
+			r.Post("/", s.handleCreateKlink())
+			r.Get("/", s.handleListKlinks())
+			r.Get("/{id}", s.handleGetKlink())
+			r.Put("/{id}", s.handleUpdateKlink())
+			r.Delete("/{id}", s.handleDeleteKlink())
+		})
+
 		r.Route("/permissions", func(r chi.Router) {
 			r.Get("/", s.handleListPermissions())
 		})
