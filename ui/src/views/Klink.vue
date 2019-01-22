@@ -1,40 +1,57 @@
 <template>
   <div class="box">
-    <h3 v-if="klink.id == 0" class="title is-3">New K-Link</h3>
-    <h3 v-if="klink.id != 0" class="title is-3">Edit K-Link: {{ klink.name }}</h3>
-    <form>
+    <h3 v-if="!klink.id" class="title is-3">New K-Link</h3>
+    <h3 v-if="!!klink.id" class="title is-3">Edit K-Link: {{ klink.name }}</h3>
+    <form @submit="checkForm" action="#" method="post">
       <div class="field is-horizontal">
         <label for="name" class="field-label is-normal">Name</label>
         <div class="field-body">
           <div class="field">
             <div class="control is-expanded">
-              <input id="name" v-model="klink.name" type="text" class="input">
+              <input id="name" v-model="klink.name" type="text" class="input" v-bind:class="{ 'is-danger': errors.name}">
             </div>
+            <p v-if="errors.name" class="help is-danger">
+              {{errors.name}}
+            </p>
           </div>
         </div>
       </div>
 
       <div class="field is-horizontal">
-        <label for="owner" class="field-label is-normal">Manager</label>
+        <label for="manager" class="field-label is-normal">Manager</label>
         <div class="field-body">
           <div class="field is-narrow">
             <div class="control">
-              <div class="select is-primary">
-                <select id="owner" v-model="klink.manager_id">
-                  <option v-for="user in registrants" :key="user.id" :value="user.id">{{ user.name | user.email }}</option>
+              <div class="select" v-bind:class="{ 'is-danger': errors.manager_id}">
+                <select id="manager" v-model="klink.manager_id">
+                  <option v-for="user in registrants" :key="user.id" :value="user.id">{{ user.name }}</option>
                 </select>
               </div>
+              <p v-if="errors.manager_id" class="help is-danger">
+                {{errors.manager_id}}
+              </p>
             </div>
           </div>
         </div>
       </div>
 
       <div class="field is-horizontal">
-        <label for="app_domain" class="field-label is-normal">Website</label>
+        <label for="website" class="field-label is-normal">Website</label>
         <div class="field-body">
           <div class="field">
             <div class="control is-expanded">
-              <input id="domain" v-model="klink.website" type="text" class="input">
+              <input id="website" v-model="klink.website" type="text" class="input">
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="field is-horizontal">
+        <label for="description" class="field-label is-normal">Description</label>
+        <div class="field-body">
+          <div class="field">
+            <div class="control is-expanded">
+              <textarea class="textarea" id="description" v-model="klink.description"></textarea>
             </div>
           </div>
         </div>
@@ -56,25 +73,40 @@
         </div>
       </div>
 
-      <template v-if="!!klink.id">
-          <button @click="deleteKlink" class="is-pulled-right button is-danger">Delete</button>
-          <button @click="updateKlink" type="submit" class="button is-primary">Update</button>
-        </template>
-        <template v-else>
-          <button @click="createKlink" type="submit" class="button is-primary">Create</button>
-        </template>
-
-        <div class="field is-horizontal" v-if="klink.identifier !== ''">
-        <label for="identifier" class="field-label is-normal">Identifier</label>
+      <div class="field is-horizontal">
+        <div class="field-label">
+          <!-- Left empty for spacing -->
+        </div>
         <div class="field-body">
           <div class="field">
-            <div class="control is-expanded">
-              <input id="identifier" placeholder="" v-model="klink.identifier" type="text" class="input" readonly>
+            <div class="control">
+              <button type="submit" v-if="!!klink.id" class="button is-primary">Update</button>
+              <button type="submit" v-else class="button is-primary">Create</button>
             </div>
           </div>
         </div>
       </div>
+
+          
+
+      <div class="field is-horizontal" v-if="!!klink.id">
+        <label for="identifier" class="field-label is-normal">Identifier</label>
+        <div class="field-body">
+          <div class="field">
+            {{klink.id}}
+          </div>
+        </div>
+      </div>
     </form>
+
+    <section class="section" v-if="!!klink.id">
+      <div class="container">
+        <h1 class="title is-size-4">Danger zone</h1>
+        <div>
+          <button @click="deleteKlink" class="button is-danger">Delete</button>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -106,6 +138,36 @@ export default {
     this.fetchData();
   },
   methods: {
+    checkForm(event) {
+
+      this.errors = {
+        name: null,
+        manager_id: null,
+      };
+      var errored = false;
+
+      if (!this.klink.name) {
+        this.errors.name = 'K-Link Name required.';
+        errored = true;
+      }
+      if (!this.klink.manager_id) {
+        this.errors.manager_id = 'Please select a manager.';
+        errored = true;
+      }
+
+      event.preventDefault();
+
+      if(!errored){
+
+        if(this.klink.id){
+          this.updateKlink(event);
+        }
+        else {
+          this.createKlink(event);
+        }
+      }
+
+    },
     createKlink(event) {
       event.preventDefault();
       event.stopPropagation();
@@ -135,6 +197,7 @@ export default {
         });
     },
     deleteKlink(event) {
+      debugger;
       event.preventDefault();
       event.stopPropagation();
 
@@ -153,8 +216,6 @@ export default {
     fetchData() {
       let klinkID = this.$route.params.id;
 
-      // if we want to create a new user, load the default user instead of
-      // querying the API
       if (klinkID === "new") {
         this.klink = baseKlink;
         this.klink.manager_id = store.state.user.id;
