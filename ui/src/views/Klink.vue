@@ -129,7 +129,6 @@ export default {
   data: function() {
     return {
       klink: {},
-      permissions: [],
       registrants: [],
       errors: []
     };
@@ -230,16 +229,6 @@ export default {
             this.errors.push(e);
           });
       }
-
-      api
-        .getPermissions()
-        .then(permissions => {
-          this.permissions = permissions;
-        })
-        .catch(e => {
-          this.$showError("Error fetching Permissions");
-          this.errors.push(e);
-        });
 
       api
         .getRegistrants()
