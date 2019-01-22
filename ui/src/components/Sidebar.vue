@@ -1,5 +1,5 @@
 <template>
-    <nav :class="{active}">
+    <nav>
       <div>
         <router-link class="nav-link" :to="{ name: 'Applications'}" :title="$t('sidebar.applications')">
           <font-awesome-icon icon="code" />
