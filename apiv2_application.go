@@ -171,6 +171,7 @@ func (s *Server) handleUpdateApplication() http.HandlerFunc {
 		app.Active = request.Active
 		app.Name = request.Name
 		app.Permissions = request.Permissions
+		app.Klinks = request.Klinks
 		app.URL = request.URL
 
 		// allow change of owner, if user is admin or owner

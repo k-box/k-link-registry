@@ -19,9 +19,9 @@
         <div class="field-body">
           <div class="field is-narrow">
             <div class="control">
-              <div class="select is-primary">
+              <div class="select">
                 <select id="owner" v-model="application.owner_id">
-                  <option v-for="user in registrants" :key="user.id" :value="user.id">{{ user.name | user.email }}</option>
+                  <option v-for="user in registrants" :key="user.id" :value="user.id">{{ user.name }}</option>
                 </select>
               </div>
             </div>
@@ -68,6 +68,20 @@
       </div>
 
       <div class="field is-horizontal">
+        <label class="field-label is-normal">K-Links</label>
+        <div class="field-body">
+          <div class="field is-narrow">
+            <div class="control" v-for="klink in klinks" :key="klink.name">
+              <label :for="klink.id" class="checkbox">
+                <input :id="klink.id" :value="klink.id" v-model="application.klinks" type="checkbox">
+                {{ klink.name }}
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field is-horizontal">
         <label for="active" class="field-label is-normal">Active</label>
         <div class="field-body">
           <div class="field is-narrow">
@@ -103,7 +117,8 @@ const baseApplication = {
   app_domain: "",
   token: "",
   active: true,
-  permissions: []
+  permissions: [],
+  klinks: []
 };
 
 export default {
@@ -114,6 +129,7 @@ export default {
       application: {},
       permissions: [],
       registrants: [],
+      klinks: [],
       errors: []
     };
   },
@@ -192,6 +208,16 @@ export default {
         })
         .catch(e => {
           this.$showError("Error fetching Permissions");
+          this.errors.push(e);
+        });
+
+      api
+        .getKlinks()
+        .then(klinks => {
+          this.klinks = klinks;
+        })
+        .catch(e => {
+          this.$showError("Error fetching K-Links");
           this.errors.push(e);
         });
 
