@@ -2,6 +2,7 @@ package klinkregistry
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"github.com/go-playground/validator"
@@ -27,6 +28,12 @@ type RPCResponse struct {
 	ID     interface{} `json:"id"`
 	Result interface{} `json:"result,omitempty"`
 	Error  *RPCError   `json:"error,omitempty"`
+}
+
+// KlinkResponse wraps the klink entries in the klinks array
+type KlinkResponse struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
 }
 
 // writeRPCResponse is a helper function to write the response object to the client
@@ -58,6 +65,25 @@ func checkAccess(app *Application, permissions []string) error {
 	return nil
 }
 
+// MapToKlink maps a list of ids to the corresponding K-Link instance
+func (s *Server) MapToKlink(vs []string) []KlinkResponse {
+	vsm := make([]KlinkResponse, 0)
+	for _, v := range vs {
+
+		if v != "" {
+			klink, err := s.store.GetKlinkByIdentifier(v)
+
+			if err == nil {
+				model := new(KlinkResponse)
+				model.ID = klink.Identifier
+				model.Name = klink.Name
+				vsm = append(vsm, *model)
+			}
+		}
+	}
+	return vsm
+}
+
 // handleAuthenticate will serve the application.authenticate endpoint on
 // the v1 API.
 func (s *Server) handleAuthenticate() http.HandlerFunc {
@@ -74,11 +100,12 @@ func (s *Server) handleAuthenticate() http.HandlerFunc {
 
 	// AppResponse is the Application returned to the client on success
 	type AppResponse struct {
-		Name        string   `json:"name"`
-		AppURL      string   `json:"app_url"`
-		AppID       int64    `json:"app_id"`
-		Permissions []string `json:"permissions"`
-		OwnerEmail  string   `json:"email"`
+		Name        string          `json:"name"`
+		AppURL      string          `json:"app_url"`
+		AppID       int64           `json:"app_id"`
+		Permissions []string        `json:"permissions"`
+		Klinks      []KlinkResponse `json:"klinks"`
+		OwnerEmail  string          `json:"email"`
 	}
 
 	// Common errors we will encounter
@@ -98,9 +125,12 @@ func (s *Server) handleAuthenticate() http.HandlerFunc {
 
 		if err := decoder.Decode(&request); err != nil {
 			response.Error = &APIErrInvalidJSON
+			log.Println("v1-application validation malformed request payload")
 			writeRPCResponse(w, response)
 			return
 		}
+
+		log.Printf("v1-application validation [%s]", request.Parameters.AppURL)
 
 		// ResponseID should be the same as the request ID
 		response.ID = request.ID
@@ -144,6 +174,7 @@ func (s *Server) handleAuthenticate() http.HandlerFunc {
 			AppURL:      app.URL,
 			AppID:       app.ID,
 			Permissions: app.Permissions,
+			Klinks:      s.MapToKlink(app.Klinks),
 			OwnerEmail:  owner.Email,
 		}
 
