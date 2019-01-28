@@ -32,6 +32,7 @@ var (
 	API2ErrInvalidURL         = Error{403, "URL could not be understood", ""}
 	API2ErrNotFound           = Error{404, "Resource not found", ""}
 	API2ErrTokenExpired       = Error{404, "Token has expired", ""}
+	API2ErrUserNotAdmin       = Error{422, "The specified user is not existing or is not an administrator", ""}
 )
 
 // RegistrationRequest contains all information to start the registtation

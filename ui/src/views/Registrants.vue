@@ -5,7 +5,6 @@
         <table class="table is-hoverable is-fullwidth">
             <thead>
                 <tr>
-                    <th style="width: 24px"><!-- avatar --></th>
                     <th>{{ $t('registrants.name') }}</th>
                     <th>{{ $t('registrants.active') }}</th>
                     <th>{{ $t('registrants.actions') }}</th>
@@ -13,11 +12,6 @@
             </thead>
             <tbody>
                 <tr v-for="registrant in registrants" :key="registrant.id">
-                    <td>
-                      <figure class="image is-24x24">
-                        <img src="@/assets/img/24x24.png">
-                      </figure>
-                    </td>
                     <td>
                       <router-link :to="{name: 'Registrant', params: {id: registrant.id}}">
                         {{ registrant.name }}

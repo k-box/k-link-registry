@@ -3,7 +3,7 @@ package mysql
 import (
 	"strings"
 
-	"github.com/k-box/k-link-registry"
+	klinkregistry "github.com/k-box/k-link-registry"
 )
 
 // ApplicationRow represents an Application inside the database
@@ -14,6 +14,7 @@ type ApplicationRow struct {
 	URL         string `db:"app_domain"`
 	Token       string `db:"auth_token"`
 	Permissions string `db:"permissions"`
+	Klinks      string `db:"klinks"`
 	Active      bool   `db:"status"`
 }
 
@@ -28,6 +29,7 @@ func (row *ApplicationRow) fromApplication(app *klinkregistry.Application) {
 	row.URL = app.URL
 	row.Token = app.Token
 	row.Permissions = strings.Join(app.Permissions, ",")
+	row.Klinks = strings.Join(app.Klinks, ",")
 	row.Active = app.Active
 }
 
@@ -44,6 +46,7 @@ func (row *ApplicationRow) toApplication() *klinkregistry.Application {
 	app.URL = row.URL
 	app.Token = row.Token
 	app.Permissions = strings.Split(row.Permissions, ",")
+	app.Klinks = strings.Split(row.Klinks, ",")
 	app.Active = row.Active
 	return app
 }
@@ -55,9 +58,9 @@ func (db Database) CreateApplication(app *klinkregistry.Application) error {
 	row.fromApplication(app)
 
 	res, err := db.db.NamedExec(`INSERT INTO application (
-			registrant_id, name, app_domain, auth_token, permissions, status
+			registrant_id, name, app_domain, auth_token, permissions, klinks, status
 		) VALUES (
-			:registrant_id, :name, :app_domain, :auth_token, :permissions, :status
+			:registrant_id, :name, :app_domain, :auth_token, :permissions, :klinks, :status
 		)`, &row)
 	if err != nil {
 		return err
@@ -126,6 +129,7 @@ func (db Database) ReplaceApplication(app *klinkregistry.Application) error {
 		app_domain = :app_domain,
 		auth_token = :auth_token,
 		permissions = :permissions,
+		klinks = :klinks,
 		status = :status
 		WHERE application_id = :application_id`, &row)
 	if err != nil {

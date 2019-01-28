@@ -10,7 +10,7 @@ import (
 
 	"github.com/k-box/k-link-registry/database/mysql"
 
-	"github.com/k-box/k-link-registry"
+	klinkregistry "github.com/k-box/k-link-registry"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -97,6 +97,8 @@ configuration by registrants.`,
 		}
 
 		s.SetStore(db)
+
+		log.Println("Registry waiting for connections...")
 
 		if err := s.Run(); err != nil {
 			log.Fatalf("Error running server: %s", err)

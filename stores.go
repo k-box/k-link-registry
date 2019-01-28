@@ -28,6 +28,16 @@ type ApplicationStorer interface {
 	DeleteApplication(id int64) error
 }
 
+// KlinkStorer implements all methods to persist Klinks
+type KlinkStorer interface {
+	CreateKlink(*Klink) error
+	ListKlinks() ([]*Klink, error)
+	GetKlinkByPrimaryKey(id int64) (*Klink, error)
+	GetKlinkByIdentifier(identifier string) (*Klink, error)
+	UpdateKlink(*Klink) error
+	DeleteKlink(id int64) error
+}
+
 // PermissionStorer implements all methods to persist Permissions
 type PermissionStorer interface {
 	ListPermissions() ([]*Permission, error)
@@ -40,5 +50,6 @@ type Storer interface {
 	ApplicationStorer
 	PermissionStorer
 	EmailVerificationStorer
+	KlinkStorer
 	IsNotFound(error) bool
 }

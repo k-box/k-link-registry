@@ -1,9 +1,15 @@
 <template>
-    <nav :class="{active}">
+    <nav>
       <div>
         <router-link class="nav-link" :to="{ name: 'Applications'}" :title="$t('sidebar.applications')">
           <font-awesome-icon icon="code" />
           <span>{{ $t('sidebar.applications') }}</span>
+        </router-link>
+      </div>
+      <div v-if="$store.state.user.role == 'ROLE_ADMIN'">
+        <router-link class="nav-link" :to="{ name: 'Klinks'}" :title="$t('sidebar.klinks')">
+          <font-awesome-icon icon="link" />
+          <span>{{ $t('sidebar.klinks') }}</span>
         </router-link>
       </div>
       <div v-if="$store.state.user.role == 'ROLE_ADMIN' || $store.state.user.role == 'ROLE_OWNER'">
