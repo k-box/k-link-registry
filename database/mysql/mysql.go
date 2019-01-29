@@ -20,7 +20,7 @@ type Database struct {
 func NewDatabase(dsn string) (*Database, error) {
 	db, err := sqlx.Open("mysql", dsn)
 
-	err = PingWithRetry(*db)
+	err = PingWithRetry(*db, 5)
 
 	if err != nil {
 		db.Close()
@@ -62,8 +62,7 @@ func (db Database) IsNotFound(err error) bool {
 }
 
 // PingWithRetry tries to Ping the connection for a predefined number of attempts before failing
-func PingWithRetry(db sqlx.DB) error {
-	attempts := 3
+func PingWithRetry(db sqlx.DB, attempts int) error {
 	var err error
 	err = nil
 
