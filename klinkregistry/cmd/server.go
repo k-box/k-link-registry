@@ -16,6 +16,7 @@ import (
 )
 
 var (
+	// DefaultPermissions contains the default permissions handled by the registry
 	DefaultPermissions = []string{
 		"data-add",
 		"data-edit",
@@ -75,6 +76,7 @@ configuration by registrants.`,
 		db, err := mysql.NewDatabase(dsn)
 		if err != nil {
 			log.Printf("Error creating Database: %s", err.Error())
+			panic(err)
 		}
 
 		// try to migrate to latest database revision
