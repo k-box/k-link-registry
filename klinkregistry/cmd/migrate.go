@@ -84,6 +84,7 @@ func migrate(config *klinkregistry.Config, command string) error {
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {
 		log.Printf("Error opening connection to database: %s", err.Error())
+		panic(err)
 	}
 
 	migrator, err := mysql.GetMigrator(db, fs, migrationPathInFs)
