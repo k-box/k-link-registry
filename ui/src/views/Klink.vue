@@ -196,7 +196,6 @@ export default {
         });
     },
     deleteKlink(event) {
-      debugger;
       event.preventDefault();
       event.stopPropagation();
 
