@@ -75,7 +75,7 @@ func PingWithRetry(db sqlx.DB) error {
 		}
 
 		log.Println("Trying again to contact the database host...")
-		time.Sleep(1 * time.Second)
+		time.Sleep(time.Duration(index+1) * time.Second)
 	}
 
 	return err
