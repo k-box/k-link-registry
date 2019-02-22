@@ -2,6 +2,7 @@ image: golang:1.10
 
 variables:
   REPO_NAME: github.com/k-box/k-link-registry
+  CONTAINER_RELEASE_IMAGE_BASE: $CI_REGISTRY/images/k-link-registry
 
 # The problem is that to be able to use go get, one needs to put
 # the repository in the $GOPATH. So for example if your gitlab domain
@@ -10,15 +11,18 @@ variables:
 # repository in /go/src/gitlab.com/namespace/project
 # Thus, making a symbolic link corrects this.
 before_script:
-  - mkdir -p $GOPATH/src/$REPO_NAME
-  - ln -svf $CI_PROJECT_DIR/* $GOPATH/src/$REPO_NAME
-  - cd $GOPATH/src/$REPO_NAME
+  - export IMAGE_TAG="${CI_COMMIT_REF_NAME#v}_${CI_COMMIT_SHA:0:10}"
+  - export CLEANED_CI_COMMIT_REF_NAME="${CI_COMMIT_REF_NAME#v}"
+  - if [ "${CI_JOB_STAGE}" != "deploy" ]; then mkdir -p "$GOPATH"/src/"$REPO_NAME"; fi
+  - if [ "${CI_JOB_STAGE}" != "deploy" ]; then ln -svf "$CI_PROJECT_DIR"/* "$GOPATH"/src/"$REPO_NAME"; fi
+  - if [ "${CI_JOB_STAGE}" != "deploy" ]; then cd "$GOPATH"/src/"$REPO_NAME"; fi
 
 stages:
   - test
   - build_frontend
   - build
   - release
+  - deploy
 
 format:
   stage: test
@@ -97,17 +101,69 @@ minify:
   only:
     - tags
 
-build_image:
+
+## Normal branch release, we create local images for being used during tests
+branch_release:
   stage: release
+  script:
+    - echo $IMAGE_TAG
+    - cd $CI_PROJECT_DIR
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker build -t $CI_REGISTRY_IMAGE:${IMAGE_TAG} .
+    - docker push $CI_REGISTRY_IMAGE:${IMAGE_TAG}
+    - docker rmi $CI_REGISTRY_IMAGE:${IMAGE_TAG}
   tags:
     - dind
   image: "docker:latest"
   services:
     - docker:dind
+  except:
+    - tags
+
+## Tagged releases
+tagged_release:
+  stage: release
   script:
+    - echo $IMAGE_TAG
     - cd $CI_PROJECT_DIR
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-    - docker build -t $CI_REGISTRY_IMAGE:${CI_COMMIT_REF_NAME#v} .
-    - docker push $CI_REGISTRY_IMAGE:${CI_COMMIT_REF_NAME#v}
-#  only:
-#    - tags
+    - docker build -t $CONTAINER_RELEASE_IMAGE_BASE:${CI_COMMIT_REF_NAME#v} .
+    - docker login -u $REGISTRY_RELEASE_USERNAME -p $REGISTRY_RELEASE_PASSWORD $CI_REGISTRY
+    - docker tag $CONTAINER_RELEASE_IMAGE_BASE:${CI_COMMIT_REF_NAME#v} "$CONTAINER_RELEASE_IMAGE_BASE:latest"
+    - docker push "$CONTAINER_RELEASE_IMAGE_BASE:latest"
+    - docker push "$CONTAINER_RELEASE_IMAGE_BASE:${CI_COMMIT_REF_NAME#v}"
+    - docker rmi "$CONTAINER_RELEASE_IMAGE_BASE:${CI_COMMIT_REF_NAME#v}"
+  tags:
+    - dind
+  image: "docker:latest"
+  services:
+    - docker:dind
+  only:
+    - tags
+
+
+
+## Deploy on canary environments
+.canary_deploy: &canary_deploy
+  when: manual
+  stage: deploy
+  tags:
+    - shell
+    - deploy
+  dependencies: []
+  script:
+    - DEPLOY_TAG=$([ -z "${CI_COMMIT_TAG}" ] && echo "${IMAGE_TAG}" || echo "${CLEANED_CI_COMMIT_REF_NAME}")
+    - DEPLOY_REGISTRY=$([ -z "${CI_COMMIT_TAG}" ] && echo "${CI_REGISTRY_IMAGE}" || echo "${CONTAINER_RELEASE_IMAGE_BASE}")
+    - echo "Deploying ${DEPLOY_REGISTRY} - ${DEPLOY_TAG}..."
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker pull $DEPLOY_REGISTRY:${DEPLOY_TAG}
+    - cd $DEPLOY_FOLDER
+    - docker tag $DEPLOY_REGISTRY:${DEPLOY_TAG} $DEPLOY_IMAGE
+    - docker-compose down -v && docker-compose up -d
+
+canary_juliet_deploy:
+  <<: *canary_deploy
+  environment: "Canary Juliet"
+  variables:
+    DEPLOY_FOLDER: $CANARY_J_FOLDER
+    DEPLOY_IMAGE: $CANARY_J_IMAGE
