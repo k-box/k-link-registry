@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/go-chi/chi"
@@ -20,8 +21,10 @@ type Error struct {
 
 // Errors that the API may emit
 var (
+	API2ErrGeneric                  = Error{500, "Something happened on our end, please contact the support", ""}
 	API2ErrDatabase                 = Error{500, "Database Error", ""}
-	API2ErrEmail                    = Error{500, "Error sending Email", ""}
+	API2ErrDuplicateUser            = Error{409, "User already taken", ""}
+	API2ErrEmail                    = Error{500, "It was not possible to send the verification email", ""}
 	API2ErrInvalidResponse          = Error{500, "Invalid response", ""}
 	API2ErrTokenGeneration          = Error{500, "Token generation error", ""}
 	API2ErrUUIDGeneration           = Error{500, "UUID generation failed", ""}
@@ -142,14 +145,19 @@ func (s *Server) handlePostRegistration() http.HandlerFunc {
 			Email:    request.Email,
 		}
 		if err := s.store.CreateRegistrant(registrant); err != nil {
-			fmt.Println(registrant)
-			jsonResponse(w, API2ErrDatabase)
-			return
+
+			if strings.Contains(err.Error(), "1062: Duplicate entry") {
+				jsonResponse(w, API2ErrDuplicateUser)
+				return
+			} else {
+				fmt.Println(err)
+				jsonResponse(w, API2ErrGeneric)
+				return
+			}
 		}
 
 		uuid, err := uuid.NewV4()
 		if err != nil {
-			fmt.Println("Log1")
 			jsonResponse(w, API2ErrUUIDGeneration)
 			return
 		}
@@ -174,14 +182,13 @@ func (s *Server) handlePostRegistration() http.HandlerFunc {
 			emailVerification.Token,
 		)
 
-		// TODO: localize somehow?
 		if err := s.email.Email(
 			emailVerification.Email,
 			"K-Link-Registry: Please verify your email address",
 			`html `+verificationLink,
 			`hello, welcome to the K-Link registry. Please use this link to verify your mail address and set a password: `+verificationLink,
 		); err != nil {
-			jsonResponse(w, API2ErrEmail)
+			jsonResponse(w, Error{422, err.Error(), ""})
 			return
 		}
 
