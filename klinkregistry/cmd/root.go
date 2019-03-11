@@ -60,6 +60,7 @@ func init() {
 	rootCmd.PersistentFlags().String("smtp-user", "registry", "Mail server user")
 	rootCmd.PersistentFlags().String("smtp-pass", "registry", "Mail server password")
 	rootCmd.PersistentFlags().String("smtp-from", "registry@example.com", "Mail sender address")
+	rootCmd.PersistentFlags().Bool("smtp-allow-insecure", false, "Allow insecure connection to the mail service")
 
 	rootCmd.PersistentFlags().String("assets", "", "Path to serve assets from. Default: Use embedded assets")
 	rootCmd.PersistentFlags().String("migrations", "", "Path that contains the database migrations to run. Default: Use embedded migrations")
@@ -77,6 +78,7 @@ func init() {
 	viper.BindPFlag("smtp_user", rootCmd.PersistentFlags().Lookup("smtp-user"))
 	viper.BindPFlag("smtp_pass", rootCmd.PersistentFlags().Lookup("smtp-pass"))
 	viper.BindPFlag("smtp_from", rootCmd.PersistentFlags().Lookup("smtp-from"))
+	viper.BindPFlag("smtp_allow_insecure", rootCmd.PersistentFlags().Lookup("smtp-allow-insecure"))
 
 	viper.BindPFlag("assets_dir", rootCmd.PersistentFlags().Lookup("assets"))
 	viper.BindPFlag("migrations_dir", rootCmd.PersistentFlags().Lookup("migrations"))

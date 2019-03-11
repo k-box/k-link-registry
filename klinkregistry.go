@@ -36,11 +36,12 @@ type Config struct {
 	HTTPBasePath     string
 	HTTPSecret       string
 
-	SMTPHost     string
-	SMTPPort     int
-	SMTPUser     string
-	SMTPPassword string
-	SMTPFrom     string
+	SMTPHost          string
+	SMTPPort          int
+	SMTPUser          string
+	SMTPPassword      string
+	SMTPFrom          string
+	SMTPAllowInsecure bool
 
 	DatabaseHost     string
 	DatabasePort     int
@@ -84,11 +85,12 @@ func (s *Server) initSMTP() error {
 	}
 
 	smtpOptions := &mail.SMTPOptions{
-		Host: s.config.SMTPHost,
-		Port: s.config.SMTPPort,
-		User: s.config.SMTPUser,
-		Pass: s.config.SMTPPassword,
-		From: s.config.SMTPFrom,
+		Host:          s.config.SMTPHost,
+		Port:          s.config.SMTPPort,
+		User:          s.config.SMTPUser,
+		Pass:          s.config.SMTPPassword,
+		From:          s.config.SMTPFrom,
+		AllowInsecure: s.config.SMTPAllowInsecure,
 	}
 	s.email = &mail.SMTPMailer{Options: smtpOptions}
 

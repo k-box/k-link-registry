@@ -158,7 +158,6 @@ func (s *Server) handlePostRegistration() http.HandlerFunc {
 
 		uuid, err := uuid.NewV4()
 		if err != nil {
-			fmt.Println("Log1")
 			jsonResponse(w, API2ErrUUIDGeneration)
 			return
 		}
@@ -183,14 +182,13 @@ func (s *Server) handlePostRegistration() http.HandlerFunc {
 			emailVerification.Token,
 		)
 
-		// TODO: localize somehow?
 		if err := s.email.Email(
 			emailVerification.Email,
 			"K-Link-Registry: Please verify your email address",
 			`html `+verificationLink,
 			`hello, welcome to the K-Link registry. Please use this link to verify your mail address and set a password: `+verificationLink,
 		); err != nil {
-			jsonResponse(w, API2ErrEmail)
+			jsonResponse(w, Error{422, err.Error(), ""})
 			return
 		}
 
