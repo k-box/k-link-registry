@@ -14,6 +14,9 @@ const state = {
   networkName: document
     .querySelector('meta[name="network"]')
     .getAttribute("content"),
+  acceptNewUsers: document
+    .querySelector('meta[name="acceptUser"]')
+    .getAttribute("content") === 'true',
   jwt: '',
   user: {
     id: 0,

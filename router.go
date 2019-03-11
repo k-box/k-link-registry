@@ -31,7 +31,7 @@ func (s *Server) initRoutes() {
 			r.Post("/session", s.handleCreateSession())
 			r.Get("/session", s.handleGetSession())
 
-			r.Post("/registrations", s.handlePostRegistration())
+			r.Post("/registration", s.handlePostRegistration())
 
 			r.Get("/email-verification/{token}", s.handleGetVerifyEmail())
 			r.Post("/email-verification/{token}", s.handlePostVerifyEmail())
@@ -108,7 +108,7 @@ func (s *Server) initRoutes() {
 			w.Header().Set("x-frame-options", "SAMEORIGIN")
 			w.Header().Set("x-content-type-options", "nosniff")
 			w.Header().Set("x-xss-protection", "1; mode=block")
-			renderFile(w, s.assets, s.config.HTTPBasePath, s.config.NetworkName, "/static/index.html")
+			renderFile(w, s.assets, s.config.HTTPBasePath, s.config.NetworkName, s.config.EnableUserRegistration, "/static/index.html")
 			return
 		})
 
@@ -116,7 +116,7 @@ func (s *Server) initRoutes() {
 		// can be resolved
 		r.HandleFunc("/static/static/js/manifest.{blob}.js", func(w http.ResponseWriter, req *http.Request) {
 			blob := chi.URLParam(req, "blob")
-			if err := renderFile(w, s.assets, s.config.HTTPBasePath, s.config.NetworkName, "/static/static/js/manifest."+blob+".js"); err != nil {
+			if err := renderFile(w, s.assets, s.config.HTTPBasePath, s.config.NetworkName, s.config.EnableUserRegistration, "/static/static/js/manifest."+blob+".js"); err != nil {
 				fmt.Println(err)
 			}
 		})
@@ -165,7 +165,7 @@ func staticHandler(fs http.FileSystem, prefix string) http.HandlerFunc {
 }
 
 // renderFile renders a file using a template with some variables.
-func renderFile(w http.ResponseWriter, fs http.FileSystem, baseURL, networkName, path string) error {
+func renderFile(w http.ResponseWriter, fs http.FileSystem, baseURL string, networkName string, acceptUserRegistration bool, path string) error {
 	file, err := fs.Open(path)
 	if err != nil {
 		// could not open file
@@ -195,8 +195,9 @@ func renderFile(w http.ResponseWriter, fs http.FileSystem, baseURL, networkName,
 	w.Header().Set("Content-Type", contentType+"; charset=utf-8")
 
 	data := map[string]interface{}{
-		"BaseURL":     baseURL,
-		"NetworkName": networkName,
+		"BaseURL":                baseURL,
+		"NetworkName":            networkName,
+		"AcceptUserRegistration": acceptUserRegistration,
 	}
 
 	err = tpl.Execute(w, data)

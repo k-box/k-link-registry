@@ -20,19 +20,20 @@ type Error struct {
 
 // Errors that the API may emit
 var (
-	API2ErrDatabase           = Error{500, "Database Error", ""}
-	API2ErrEmail              = Error{500, "Error sending Email", ""}
-	API2ErrInvalidResponse    = Error{500, "Invalid response", ""}
-	API2ErrTokenGeneration    = Error{500, "Token generation error", ""}
-	API2ErrUUIDGeneration     = Error{500, "UUID generation failed", ""}
-	API2ErrInvalidJSON        = Error{400, "Invalid JSON request", ""}
-	API2ErrUnauthorized       = Error{401, "Unauthorized", ""}
-	API2ErrInvalidCredentials = Error{403, "Invalid Credentials", ""}
-	API2ErrAccountDisabled    = Error{403, "Account disabled", ""}
-	API2ErrInvalidURL         = Error{403, "URL could not be understood", ""}
-	API2ErrNotFound           = Error{404, "Resource not found", ""}
-	API2ErrTokenExpired       = Error{404, "Token has expired", ""}
-	API2ErrUserNotAdmin       = Error{422, "The specified user is not existing or is not an administrator", ""}
+	API2ErrDatabase                 = Error{500, "Database Error", ""}
+	API2ErrEmail                    = Error{500, "Error sending Email", ""}
+	API2ErrInvalidResponse          = Error{500, "Invalid response", ""}
+	API2ErrTokenGeneration          = Error{500, "Token generation error", ""}
+	API2ErrUUIDGeneration           = Error{500, "UUID generation failed", ""}
+	API2ErrInvalidJSON              = Error{400, "Invalid JSON request", ""}
+	API2ErrUnauthorized             = Error{401, "Unauthorized", ""}
+	API2ErrInvalidCredentials       = Error{403, "Invalid Credentials", ""}
+	API2ErrAccountDisabled          = Error{403, "Account disabled", ""}
+	API2ErrInvalidURL               = Error{403, "URL could not be understood", ""}
+	API2ErrNotFound                 = Error{404, "Resource not found", ""}
+	API2ErrTokenExpired             = Error{404, "Token has expired", ""}
+	API2ErrUserNotAdmin             = Error{422, "The specified user is not existing or is not an administrator", ""}
+	API2ErrUserRegistrationDisabled = Error{409, "User registration is disabled", ""}
 )
 
 // RegistrationRequest contains all information to start the registtation
@@ -122,6 +123,11 @@ func (s *Server) handlePostRegistration() http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		var request RegistrationRequest
 		var response Response
+
+		if !s.config.EnableUserRegistration {
+			jsonResponse(w, API2ErrUserRegistrationDisabled)
+			return
+		}
 
 		if err := json.NewDecoder(req.Body).Decode(&request); err != nil {
 			jsonResponse(w, API2ErrInvalidJSON)
