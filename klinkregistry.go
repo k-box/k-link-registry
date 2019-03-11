@@ -50,6 +50,8 @@ type Config struct {
 
 	AdminUsername string
 	AdminPassword string
+
+	EnableUserRegistration bool // enable or disable user registration from the UI
 }
 
 // Server is a struct that serves the Web application

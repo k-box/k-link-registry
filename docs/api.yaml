@@ -200,7 +200,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Session'
-  /auth/registrations:
+  /auth/registration:
     post:
       tags:
       - Authentication

@@ -540,7 +540,7 @@ export function getPermissions() {
 export function newRegistration(registration) {
     return new Promise((resolve, reject) => {
         axios
-            .post(`${store.state.baseURL}/api/2.0/auth/registrations`, registration, {})
+            .post(`${store.state.baseURL}/api/2.0/auth/registration`, registration, {})
             .then(response => {
                 switch (response.status) {
                     case 200:

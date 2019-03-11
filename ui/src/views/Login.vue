@@ -15,7 +15,7 @@
         <router-link to="/auth/reset-password" class="button is-text is-fullwidth">{{ $t('login.forgot_password_link') }}</router-link>
       </div>
     </form>
-    <div class="has-text-centered">
+    <div class="has-text-centered" v-if="$store.state.acceptNewUsers">
       <router-link to="/auth/sign-up" class="has-text-white">{{ $t('login.sign_up_link') }}</router-link>
     </div>
   </div>
@@ -32,7 +32,7 @@ export default {
     return {
       wrong: false,
       email: "",
-      password: ""
+      password: "",
     };
   },
   mounted() {

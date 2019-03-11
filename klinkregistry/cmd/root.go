@@ -64,6 +64,8 @@ func init() {
 	rootCmd.PersistentFlags().String("assets", "", "Path to serve assets from. Default: Use embedded assets")
 	rootCmd.PersistentFlags().String("migrations", "", "Path that contains the database migrations to run. Default: Use embedded migrations")
 
+	rootCmd.PersistentFlags().Bool("enable-user-registration", false, "Enable user registration. Default false")
+
 	viper.BindPFlag("db_host", rootCmd.PersistentFlags().Lookup("db-host"))
 	viper.BindPFlag("db_port", rootCmd.PersistentFlags().Lookup("db-port"))
 	viper.BindPFlag("db_user", rootCmd.PersistentFlags().Lookup("db-user"))
@@ -78,6 +80,8 @@ func init() {
 
 	viper.BindPFlag("assets_dir", rootCmd.PersistentFlags().Lookup("assets"))
 	viper.BindPFlag("migrations_dir", rootCmd.PersistentFlags().Lookup("migrations"))
+
+	viper.BindPFlag("enable_user_registration", rootCmd.PersistentFlags().Lookup("enable-user-registration"))
 }
 
 // initConfig reads in config file and ENV variables if set.

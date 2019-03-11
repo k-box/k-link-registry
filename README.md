@@ -42,8 +42,9 @@ Used by every command
 | smtp-host  | `REGISTRY_SMTP_HOST`      | Mail Host (default: empty, logger will be used to output mails) |
 | smtp-port  | `REGISTRY_SMTP_PORT`      | Outgoing mail Port (default: 25)                                |
 | smtp-user  | `REGISTRY_SMTP_USER`      | Mail user (default: kregistry)                                  |
-| smtp-pass  | `REGISTRY_SMTP_HOST`      | Mail Password (default: registry)                               |
-| smtp-from  | `REGISTRY_SMTP_HOST`      | From Address (default: registry@example.com)                    |
+| smtp-pass  | `REGISTRY_SMTP_PASS`      | Mail Password (default: registry)                               |
+| smtp-from  | `REGISTRY_SMTP_FROM`      | From Address (default: registry@example.com)                    |
+| enable-user-registration  | `REGISTRY_ENABLE_USER_REGISTRATION`      | Enable everyone to register an account (default: false)                    |
 
 ### `server` config
 Used by the `server` subcommand
