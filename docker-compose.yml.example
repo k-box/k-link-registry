@@ -13,7 +13,7 @@ services:
         networks:
             - internal
     web:
-        image: docker.klink.asia/main/klinkregistry:latest
+        image: klinktech/k-link-registry:0.4.0
         environment:
             - "REGISTRY_DB_HOST=database"
             - "REGISTRY_DB_NAME=kregistry"
