@@ -13,7 +13,7 @@ services:
         networks:
             - internal
     web:
-        image: klinktech/k-link-registry:0.4.0
+        image: klinktechnology/k-link-registry:0.4.0
         environment:
             - "REGISTRY_DB_HOST=database"
             - "REGISTRY_DB_NAME=kregistry"
